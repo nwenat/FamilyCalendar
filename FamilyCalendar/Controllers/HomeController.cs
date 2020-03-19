@@ -1,4 +1,5 @@
 ﻿using FamilyCalendar.Models;
+using FamilyCalendar.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.Controllers
 {
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -16,15 +18,26 @@ namespace FamilyCalendar.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public string Index()
+        [Route("")]
+        [Route("[action]")]
+        [Route("~/")]
+        public ViewResult Index()
         {
-            return _employeeRepository.GetEmployee(1).Name;
+            var model = _employeeRepository.GetAllEmployee();
+            return View(model);
         }
 
-        public ViewResult Details()
+        [Route("[action]/{id?}")]
+        public ViewResult Details(int? id)
         {
-            Employee model = _employeeRepository.GetEmployee(1);
-            return View("Test");
+            HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
+            {
+                Employee = _employeeRepository.GetEmployee(id??1),
+                PageTitle = "Employee Details"
+            };
+            
+            //ViewBag.Employee = model;
+            return View(homeDetailsViewModel);
         }
     }
 }
