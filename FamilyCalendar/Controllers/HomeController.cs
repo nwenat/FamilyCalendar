@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.Controllers
 {
-    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -18,16 +17,12 @@ namespace FamilyCalendar.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        [Route("")]
-        [Route("[action]")]
-        [Route("~/")]
         public ViewResult Index()
         {
             var model = _employeeRepository.GetAllEmployee();
             return View(model);
         }
 
-        [Route("[action]/{id?}")]
         public ViewResult Details(int? id)
         {
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
@@ -38,6 +33,24 @@ namespace FamilyCalendar.Controllers
             
             //ViewBag.Employee = model;
             return View(homeDetailsViewModel);
+        }
+
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                Employee newEmployee = _employeeRepository.Add(employee);
+                //return RedirectToAction("details", new { id = newEmployee.Id });
+            }
+
+            return View();
         }
     }
 }

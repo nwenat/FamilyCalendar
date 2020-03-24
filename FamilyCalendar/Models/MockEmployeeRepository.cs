@@ -13,10 +13,17 @@ namespace FamilyCalendar.Models
         {
             _employeeList = new List<Employee>()
             {
-                new Employee() {Id = 1, Name = "Jone", Department = "HR", Email = "jone@gmail.com" },
-                new Employee() {Id = 2, Name = "Mary", Department = "IT", Email = "mary@gmail.com" },
-                new Employee() {Id = 3, Name = "Clara", Department = "IT", Email = "clara@gmail.com" },
+                new Employee() {Id = 1, Name = "Jone", Department = Dept.HR, Email = "jone@gmail.com" },
+                new Employee() {Id = 2, Name = "Mary", Department = Dept.IT, Email = "mary@gmail.com" },
+                new Employee() {Id = 3, Name = "Clara", Department = Dept.IT, Email = "clara@gmail.com" },
             };
+        }
+
+        public Employee Add(Employee employee)
+        {
+            employee.Id = _employeeList.Max(e => e.Id) + 1;
+            _employeeList.Add(employee);
+            return employee;
         }
 
         public IEnumerable<Employee> GetAllEmployee()
