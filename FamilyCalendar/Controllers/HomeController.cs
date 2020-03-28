@@ -52,9 +52,9 @@ namespace FamilyCalendar.Controllers
             if (ModelState.IsValid)
             {
                 string uniqeFileName = null;
-                if (model.Photos != null && model.Photos.Count > 0)
+                if (model.Photo != null && model.Photo.Count > 0)
                 {
-                    foreach(IFormFile photo in model.Photos)
+                    foreach(IFormFile photo in model.Photo)
                     {
                         string uploatsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
                         uniqeFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
