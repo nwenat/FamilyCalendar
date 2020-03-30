@@ -51,17 +51,9 @@ namespace FamilyCalendar.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uniqeFileName = null;
-                if (model.Photo != null && model.Photo.Count > 0)
-                {
-                    foreach(IFormFile photo in model.Photo)
-                    {
-                        string uploatsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                        uniqeFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-                        string filePath = Path.Combine(uploatsFolder, uniqeFileName);
-                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    }
-                }
+                string uniqeFileName = ProcessUploadedFile(model);
+                    
+
                 Employee newEmployee = new Employee
                 {
                     Name = model.Name,
@@ -75,6 +67,60 @@ namespace FamilyCalendar.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            Employee employee = _employeeRepository.GetEmployee(id);
+            EmployeeEditViewModel employeeEditViewModel = new EmployeeEditViewModel()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Email = employee.Email,
+                Department = employee.Department,
+                ExistingPhotoPath = employee.PhotoPath
+            };
+            return View(employeeEditViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Employee employee = _employeeRepository.GetEmployee(model.Id);
+                employee.Name = model.Name;
+                employee.Email = model.Email;
+                employee.Department = model.Department;
+                string uniqeFileName = ProcessUploadedFile(model);
+                Employee newEmployee = new Employee
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Department = model.Department,
+                    PhotoPath = uniqeFileName
+                };
+
+                _employeeRepository.Add(newEmployee);
+                return RedirectToAction("details", new { id = newEmployee.Id });
+            }
+
+            return View();
+        }
+
+        private string ProcessUploadedFile(EmployeeCreateViewModel model)
+        {
+            string uniqeFileName = null;
+            if (model.Photo != null)
+            {
+                string uploatsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                uniqeFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                string filePath = Path.Combine(uploatsFolder, uniqeFileName);
+                model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+
+            return uniqeFileName;
         }
     }
 }
