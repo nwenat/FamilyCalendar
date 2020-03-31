@@ -30,9 +30,18 @@ namespace FamilyCalendar.Controllers
 
         public ViewResult Details(int? id)
         {
+            throw new Exception("Error in Details View");
+
+            Employee employee = _employeeRepository.GetEmployee(id.Value);
+            if (employee == null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound", id.Value);
+            }
+
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = _employeeRepository.GetEmployee(id??1),
+                Employee = employee,
                 PageTitle = "Employee Details"
             };
             
@@ -93,17 +102,19 @@ namespace FamilyCalendar.Controllers
                 employee.Name = model.Name;
                 employee.Email = model.Email;
                 employee.Department = model.Department;
-                string uniqeFileName = ProcessUploadedFile(model);
-                Employee newEmployee = new Employee
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    Department = model.Department,
-                    PhotoPath = uniqeFileName
-                };
 
-                _employeeRepository.Add(newEmployee);
-                return RedirectToAction("details", new { id = newEmployee.Id });
+                if (model.Photo != null)
+                {
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(hostingEnvironment.WebRootPath, "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    employee.PhotoPath = ProcessUploadedFile(model);
+                }
+
+                _employeeRepository.Update(employee);
+                return RedirectToAction("index");
             }
 
             return View();
@@ -117,7 +128,10 @@ namespace FamilyCalendar.Controllers
                 string uploatsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
                 uniqeFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
                 string filePath = Path.Combine(uploatsFolder, uniqeFileName);
-                model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.Photo.CopyTo(fileStream);
+                }
             }
 
             return uniqeFileName;
