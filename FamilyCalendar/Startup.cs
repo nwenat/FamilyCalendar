@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using FamilyCalendar.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace FamilyCalendar
 {
@@ -26,6 +27,8 @@ namespace FamilyCalendar
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
             services.AddMvc().AddXmlSerializerFormatters();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
@@ -45,7 +48,7 @@ namespace FamilyCalendar
             }
 
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {
