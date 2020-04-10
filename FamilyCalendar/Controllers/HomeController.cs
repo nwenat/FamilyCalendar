@@ -15,12 +15,14 @@ namespace FamilyCalendar.Controllers
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
 
-        public HomeController(IEmployeeRepository employeeRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger)
+        public HomeController(IEmployeeRepository employeeRepository, IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger)
         {
             _employeeRepository = employeeRepository;
+            _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
         }
@@ -28,6 +30,9 @@ namespace FamilyCalendar.Controllers
         public ViewResult Index()
         {
             var model = _employeeRepository.GetAllEmployee();
+            Event eee = _eventRepository.GetEvent(1);
+            ViewBag.Event = eee;
+
             return View(model);
         }
 

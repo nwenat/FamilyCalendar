@@ -9,5 +9,8 @@ namespace FamilyCalendar.Models
     {
         Event GetEvent(int Id);
         IEnumerable<Event> GetAllEvent();
+        Event Add(Event newEvent);
+        Event Update(Event eventChanges);
+        Event Delete(int id);
     }
 }

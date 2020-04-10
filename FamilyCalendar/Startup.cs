@@ -36,6 +36,7 @@ namespace FamilyCalendar
 
             services.AddMvc().AddXmlSerializerFormatters();
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
+            services.AddScoped<IEventRepository, MockEventRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
