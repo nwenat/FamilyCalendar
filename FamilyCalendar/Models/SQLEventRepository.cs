@@ -52,5 +52,23 @@ namespace FamilyCalendar.Models
             context.SaveChanges();
             return eventChanges;
         }
+
+        public IEnumerable<Event> GetMondayEvents()
+        {
+            DateTime monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + 1);
+
+            return context.Events.Where(e => e.From.Day == monday.Day);
+        }
+
+        public SortedList<int, IEnumerable<Event>> GetWeekEvents()
+        {
+            SortedList<int, IEnumerable<Event>> weekEvents = new SortedList<int, IEnumerable<Event>>();
+            for(int i = 1; i < 8; i++)
+            {
+                DateTime dayI = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + i);
+                weekEvents.Add(i, context.Events.Where(e => e.From.Day == dayI.Day));
+            }
+            return weekEvents;
+        }
     }
 }

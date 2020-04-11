@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.Models
 {
-    public class MockEventRepository : IEventRepository
+    public class MockEventRepository
     {
         private List<Event> _eventList;
 
