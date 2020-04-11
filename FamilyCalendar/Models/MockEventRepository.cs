@@ -13,7 +13,7 @@ namespace FamilyCalendar.Models
         {
             _eventList = new List<Event>()
             {
-                new Event() {Id = 1, UserId = 1, Name = "Praca",  From = new DateTime(2020, 4, 12, 7, 0, 0), To = new DateTime(2020, 4, 12, 15, 0, 0)},
+                new Event() {Id = 1, UserId = 1, Name = "Praca",  From = new DateTime(2020, 4, 12, 7, 0, 0), To = new DateTime(2020, 4, 12, 15, 0, 0), Priority = Priority.HIGH},
                 new Event() {Id = 2, UserId = 1, Name = "Szkola",  From = new DateTime(2020, 4, 13, 7, 0, 0), To = new DateTime(2020, 4, 13, 15, 0, 0)},
                 new Event() {Id = 3, UserId = 1, Name = "Granie",  From = new DateTime(2020, 4, 14, 7, 0, 0), To = new DateTime(2020, 4, 14, 15, 0, 0)},
             };

@@ -18,6 +18,7 @@ namespace FamilyCalendar.Models
         public DateTime From { get; set; }
         [Required]
         public DateTime To { get; set; }
-        public List<int> _userIdList { get; set; }
+        [Required]
+        public Priority? Priority { get; set; }
     }
 }

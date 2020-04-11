@@ -29,9 +29,7 @@ namespace FamilyCalendar.Controllers
 
         public ViewResult Index()
         {
-            var model = _employeeRepository.GetAllEmployee();
-            Event eee = _eventRepository.GetEvent(1);
-            ViewBag.Event = eee;
+            var model = _eventRepository.GetAllEvent();
 
             return View(model);
         }

@@ -4,14 +4,16 @@ using FamilyCalendar.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamilyCalendar.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200411071226_EeventPriority")]
+    partial class EeventPriority
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,37 +85,19 @@ namespace FamilyCalendar.Migrations
                         new
                         {
                             Id = 1,
-                            From = new DateTime(2020, 4, 6, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 12, 7, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Praca",
                             Priority = 0,
-                            To = new DateTime(2020, 4, 6, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            To = new DateTime(2020, 4, 12, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            From = new DateTime(2020, 4, 6, 16, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Zakupy",
-                            Priority = 1,
-                            To = new DateTime(2020, 4, 6, 17, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            From = new DateTime(2020, 4, 6, 17, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Call",
-                            Priority = 1,
-                            To = new DateTime(2020, 4, 6, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            From = new DateTime(2020, 4, 6, 20, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Kino",
-                            Priority = 1,
-                            To = new DateTime(2020, 4, 6, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 13, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Pracaaaa",
+                            Priority = 2,
+                            To = new DateTime(2020, 4, 13, 15, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         });
                 });
