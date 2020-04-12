@@ -29,9 +29,10 @@ namespace FamilyCalendar.Controllers
 
         public ViewResult Index()
         {
-            var model = _eventRepository.GetWeekEvents();
-            ViewBag.Monday = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-            ViewBag.Today = (int)DateTime.Today.DayOfWeek;
+            int dayOfWeek = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
+            var model = _eventRepository.GetWeekEvents(dayOfWeek);
+            ViewBag.Today = dayOfWeek;
+            ViewBag.Monday = DateTime.Today.AddDays(-dayOfWeek);
             return View(model);
         }
 
