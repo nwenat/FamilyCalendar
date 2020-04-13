@@ -2,3 +2,23 @@
     height: 200px;
     width: auto;
 }
+.today{
+    background-color:bisque;
+}
+.weekend {
+    background-color:honeydew;
+}
+
+.btn.highP{
+    background-color:salmon;
+}
+.btn.mediumP {
+    background-color:lightblue;
+}
+.btn.lowP {
+    background-color:palegreen;
+}
+
+.btn.addEvent {
+    background-color:blue;
+}

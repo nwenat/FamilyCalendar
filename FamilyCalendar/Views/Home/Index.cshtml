@@ -9,18 +9,20 @@
         @foreach (var keyValuePair in Model)
         {
 
-            <div class="col-sm border border-dark rounded p-2 @(keyValuePair.Key == today ? "bg-info" : "") @(keyValuePair.Key == 6 && keyValuePair.Key != today ? "bg-light" : "") @(keyValuePair.Key == 7 && keyValuePair.Key != today ? "bg-light" : "") ">
-                <h5 class="my-3 text-center"> @ViewBag.Monday.AddDays(@keyValuePair.Key).ToString("dd/MM/yyyy") </h5>
+            <div class="col-sm border border-dark rounded p-2 @(keyValuePair.Key == today ? "today" : "") @(keyValuePair.Key == 6 && keyValuePair.Key != today ? "weekend" : "") @(keyValuePair.Key == 7 && keyValuePair.Key != today ? "weekend" : "") ">
+                <h5 class="my-3 text-center font-weight-bold"> @ViewBag.Monday.AddDays(@keyValuePair.Key).ToString("dd/MM/yyyy") </h5>
                 @foreach (var eevent in keyValuePair.Value)
                 {
-                    <button type="button" class="btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "btn-danger" : "") @(@eevent.Priority == @Priority.MEDIUM ? "btn-primary" : "") @(@eevent.Priority == @Priority.LOW ? "btn-success" : "")">
+                    <button type="button" class="btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "highP" : "") @(@eevent.Priority == @Priority.MEDIUM ? "mediumP" : "") @(@eevent.Priority == @Priority.LOW ? "lowP" : "")">
                         @eevent.From.ToString("HH:mm") - @eevent.To.ToString("HH:mm") @eevent.Name
                     </button>
                 }
 
-                <a href="#" class="btn btn-secondary" data-target="#addEvent" data-toggle="modal">
-                    +
-                </a>
+                    <span class="align-bottom">
+                        <a href="#" class="btn btn-secondary px-2 py-0 addEvent" data-target="#addEvent" data-toggle="modal">
+                            <h3 class=" font-weight-bold">+</h3>
+                        </a>
+                    </span>
 
                 <div class="modal" id="addEvent">
                     <div class="modal-dialog">

@@ -10,13 +10,13 @@ namespace FamilyCalendar.Models
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            DateTime lastMonday = new DateTime(2020, 4, 6, 0, 0, 0);
-            DateTime lastTuesday = new DateTime(2020, 4, 7, 0, 0, 0);
-            DateTime lastWensday = new DateTime(2020, 4, 8, 0, 0, 0);
-            DateTime lastThurdsay = new DateTime(2020, 4, 9, 0, 0, 0);
-            DateTime lastFriday = new DateTime(2020, 4, 6, 10, 0, 0);
-            DateTime lastSaturday = new DateTime(2020, 4, 11, 0, 0, 0);
-            DateTime lastSunday = new DateTime(2020, 4, 12, 0, 0, 0);
+            DateTime lastMonday = new DateTime(2020, 4, 13, 0, 0, 0);
+            DateTime lastTuesday = new DateTime(2020, 4, 14, 0, 0, 0);
+            DateTime lastWensday = new DateTime(2020, 4, 15, 0, 0, 0);
+            DateTime lastThurdsay = new DateTime(2020, 4, 16, 0, 0, 0);
+            DateTime lastFriday = new DateTime(2020, 4, 6, 17, 0, 0);
+            DateTime lastSaturday = new DateTime(2020, 4, 18, 0, 0, 0);
+            DateTime lastSunday = new DateTime(2020, 4, 19, 0, 0, 0);
 
             modelBuilder.Entity<Event>().HasData(
                 new Event
