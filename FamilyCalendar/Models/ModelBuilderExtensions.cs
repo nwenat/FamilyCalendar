@@ -23,7 +23,7 @@ namespace FamilyCalendar.Models
                {
                    Id = 1,
                    UserId = 1,
-                   Name = "Praca",
+                   Name = "Praca pon",
                    From = lastMonday.AddHours(7),
                    To = lastMonday.AddHours(15),
                    Priority = Priority.HIGH
@@ -55,11 +55,12 @@ namespace FamilyCalendar.Models
                    To = lastMonday.AddHours(22),
                    Priority = Priority.LOW
                },
+
                new Event
                {
                    Id = 5,
                    UserId = 1,
-                   Name = "Praca",
+                   Name = "Praca wt",
                    From = lastTuesday.AddHours(7),
                    To = lastTuesday.AddHours(15),
                    Priority = Priority.HIGH
@@ -91,11 +92,12 @@ namespace FamilyCalendar.Models
                    To = lastTuesday.AddHours(22),
                    Priority = Priority.LOW
                },
+
                new Event
                {
                    Id = 9,
                    UserId = 1,
-                   Name = "Praca",
+                   Name = "Praca sr",
                    From = lastWensday.AddHours(7),
                    To = lastWensday.AddHours(15),
                    Priority = Priority.HIGH
@@ -127,11 +129,12 @@ namespace FamilyCalendar.Models
                    To = lastWensday.AddHours(22),
                    Priority = Priority.LOW
                },
+
                new Event
                {
                    Id = 13,
                    UserId = 1,
-                   Name = "Praca",
+                   Name = "Praca czw",
                    From = lastThurdsay.AddHours(7),
                    To = lastThurdsay.AddHours(15),
                    Priority = Priority.HIGH
@@ -145,11 +148,12 @@ namespace FamilyCalendar.Models
                    To = lastThurdsay.AddHours(17),
                    Priority = Priority.MEDIUM
                },
+
                new Event
                {
                    Id = 15,
                    UserId = 1,
-                   Name = "Praca",
+                   Name = "Praca pt",
                    From = lastFriday.AddHours(7),
                    To = lastFriday.AddHours(15),
                    Priority = Priority.HIGH
@@ -163,23 +167,25 @@ namespace FamilyCalendar.Models
                    To = lastFriday.AddHours(17),
                    Priority = Priority.MEDIUM
                },
+
                new Event
                {
                    Id = 17,
                    UserId = 1,
-                   Name = "Odpoczynek",
+                   Name = "Odpoczynek sobota",
                    From = lastSaturday.AddHours(16),
                    To = lastSaturday.AddHours(17),
                    Priority = Priority.MEDIUM
                },
+
                new Event
                {
                    Id = 18,
                    UserId = 1,
-                   Name = "Basen",
+                   Name = "Basen niedziela",
                    From = lastSunday.AddHours(16),
                    To = lastSunday.AddHours(17),
-                   Priority = Priority.MEDIUM
+                   Priority = Priority.LOW
                }
                );
 

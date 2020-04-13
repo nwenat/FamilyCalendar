@@ -60,12 +60,12 @@ namespace FamilyCalendar.Models
             return context.Events.Where(e => e.From.Day == monday.Day);
         }
 
-        public SortedList<int, IEnumerable<Event>> GetWeekEvents()
+        public SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayNumber)
         {
             SortedList<int, IEnumerable<Event>> weekEvents = new SortedList<int, IEnumerable<Event>>();
             for(int i = 1; i < 8; i++)
             {
-                DateTime dayI = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + i);
+                DateTime dayI = DateTime.Today.AddDays(-dayNumber + i);
                 weekEvents.Add(i, context.Events.Where(e => e.From.Day == dayI.Day));
             }
             return weekEvents;
