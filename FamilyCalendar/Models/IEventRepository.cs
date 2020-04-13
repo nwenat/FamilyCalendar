@@ -13,6 +13,6 @@ namespace FamilyCalendar.Models
         Event Update(Event eventChanges);
         Event Delete(int id);
         IEnumerable<Event> GetMondayEvents();
-        SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayOfWeek);
+        SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayNumber);
     }
 }
