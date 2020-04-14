@@ -31,10 +31,31 @@ namespace FamilyCalendar.Controllers
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
-            var model = _eventRepository.GetWeekEvents(dayNumber);
+            ViewBag.EventRepository = _eventRepository.GetWeekEvents(dayNumber);
             ViewBag.Today = dayNumber;
             ViewBag.Monday = DateTime.Today.AddDays(-dayNumber);
-            return View(model);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateEvent(EventCrateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                Event newEvent = new Event
+                {
+                    Name = model.Name,
+                    From = new DateTime(2020, 4, 18, 0, 0, 0),
+                    To = new DateTime(2020, 4, 18, 0, 0, 0),
+                    Priority = model.Priority
+                };
+
+                _eventRepository.Add(newEvent);
+                return RedirectToAction("index");
+            }
+
+            return RedirectToAction("index");
         }
 
         public ViewResult Details(int? id)

@@ -1,4 +1,5 @@
-﻿@model SortedList<int, IEnumerable<Event>>
+﻿@model EventCrateViewModel
+@*@model SortedList<int, IEnumerable<Event>>*@
 @{
     ViewBag.Title = "Twój kalendarz";
     var today = ViewBag.Today;
@@ -6,7 +7,7 @@
 <div class="container-fluid" style="height:600px">
     <h2 class="text-center m-4">Twój obecny tydzień</h2>
     <div class="row">
-        @foreach (var keyValuePair in Model)
+        @foreach (var keyValuePair in ViewBag.EventRepository)
         {
 
             <div class="col-sm border border-dark rounded p-2 @(keyValuePair.Key == today ? "today" : "") @(keyValuePair.Key == 6 && keyValuePair.Key != today ? "weekend" : "") @(keyValuePair.Key == 7 && keyValuePair.Key != today ? "weekend" : "") ">
@@ -18,21 +19,32 @@
                     </button>
                 }
 
-                    <span class="align-bottom">
-                        <a href="#" class="btn btn-secondary px-2 py-0 addEvent" data-target="#addEvent" data-toggle="modal">
+                <div class="container-fluid addEventBtn">
+                    <div class="row justify-content-end">
+                        <a href="#" class="btn btn-secondary px-2 py-0 addEvent rounded-circle" data-target="#addEvent" data-toggle="modal">
                             <h3 class=" font-weight-bold">+</h3>
                         </a>
-                    </span>
+                    </div>
+                </div>
 
                 <div class="modal" id="addEvent">
+
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form class="px-4 py-3">
+                            <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" method="post" class="px-4 py-3">
                                 <div class="form-group">
-                                    <label for="inputName"></label>
-                                    <input type="text" class="form-control" id="eventName" placeholder="wpisz zadanie">
+                                    <label asp-for="Name"></label>
+                                    <input asp-for="Name" type="text" class="form-control" placeholder="wpisz zadanie">
                                 </div>
-                                <input data-provide="datepicker">
+
+                                <div class="form-group">
+                                    <label asp-for="Priority"></label>
+                                    <select asp-for="Priority" class="custom-select mr-sm-2"
+                                            asp-items="Html.GetEnumSelectList<Priority>()">
+                                        
+                                    </select>
+                                </div>
+
                                 <div class="form-group date" data-provide="datepicker">
                                     <label for="inputFrom">From</label>
                                     <input type="text" class="form-control">
@@ -46,30 +58,17 @@
                                 </div>
 
 
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                        <label class="form-check-label" for="dropdownCheck">
-                                            Remember me
-                                        </label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sign in</button>
-                                <a class="btn btn-primary" href="#" data-dismiss="modal">Zapisz</a>
+                                <button type="submit" class="btn btn-primary" >Dodaj</button>
                             </form>
                         </div>
                     </div>
                 </div>
-
             </div>
         }
     </div>
 
 
-
-
 </div>
-
 @section Scripts {
     <script>
         $('.datepicker').datepicker();

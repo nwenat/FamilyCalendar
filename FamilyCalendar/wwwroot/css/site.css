@@ -22,3 +22,9 @@
 .btn.addEvent {
     background-color:blue;
 }
+
+.addEventBtn {
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
+}
