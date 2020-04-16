@@ -20,11 +20,11 @@
 }
 
 .btn.addEvent {
-    background-color:blue;
+    background-color: lightslategray;
 }
 
 .addEventBtn {
-    background-color: blueviolet;
+    background-color:lavender;
     display: flex;
     flex-direction: column;
 }

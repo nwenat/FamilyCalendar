@@ -31,24 +31,29 @@ namespace FamilyCalendar.Controllers
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
-            ViewBag.EventRepository = _eventRepository.GetWeekEvents(dayNumber);
+            IndexViewModel model = new IndexViewModel
+            {
+                eventsInWeek = _eventRepository.GetWeekEvents(dayNumber)
+            };
+
             ViewBag.Today = dayNumber;
             ViewBag.Monday = DateTime.Today.AddDays(-dayNumber);
-            return View();
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult CreateEvent(EventCrateViewModel model)
+        public IActionResult CreateEvent(IndexViewModel model)
         {
             if (ModelState.IsValid)
             {
 
                 Event newEvent = new Event
                 {
-                    Name = model.Name,
-                    From = new DateTime(2020, 4, 18, 0, 0, 0),
-                    To = new DateTime(2020, 4, 18, 0, 0, 0),
-                    Priority = model.Priority
+                    Name = model.eventCreate.Name,
+                    UserId = model.eventCreate.UserId,
+                    From = model.eventCreate.Date.AddHours(7),
+                    To = model.eventCreate.Date.AddHours(15),
+                    Priority = model.eventCreate.Priority
                 };
 
                 _eventRepository.Add(newEvent);

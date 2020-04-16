@@ -14,9 +14,9 @@ namespace FamilyCalendar.ViewModels
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
         [Required]
-        public DateTime From { get; set; }
+        public int UserId { get; set; }
         [Required]
-        public DateTime To { get; set; }
+        public DateTime Date { get; set; }
         [Required]
         [Display(Name = "Wybierz priorytet")]
         public Priority? Priority { get; set; }
