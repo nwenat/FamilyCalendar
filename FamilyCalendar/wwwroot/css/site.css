@@ -22,9 +22,3 @@
 .btn.addEvent {
     background-color: lightslategray;
 }
-
-.addEventBtn {
-    background-color:lavender;
-    display: flex;
-    flex-direction: column;
-}

@@ -16,9 +16,19 @@ namespace FamilyCalendar.ViewModels
         [Required]
         public int UserId { get; set; }
         [Required]
+        [Display(Name = "Data")]
         public DateTime Date { get; set; }
         [Required]
         [Display(Name = "Wybierz priorytet")]
         public Priority? Priority { get; set; }
+        [Required]
+        [Range(0, 24)]
+        public int FromHour { get; set; }
+        [Range(0, 24)]
+        public int ToHour { get; set; }
+        [Range(0, 60)]
+        public int FromMinutes { get; set; }
+        [Range(0, 60)]
+        public int ToMinutes { get; set; }
     }
 }

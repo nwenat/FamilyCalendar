@@ -1,4 +1,5 @@
 ﻿using FamilyCalendar.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,15 @@ namespace FamilyCalendar.ViewModels
     {
         public SortedList<int, IEnumerable<Event>> eventsInWeek { get; set; }
         public EventCrateViewModel eventCreate { get; set; }
+        public List<SelectListItem> hourNubers { get; set; } = Enumerable.Range(0, 24).Select(n => new SelectListItem
+        {
+            Value = n.ToString("D2"),
+            Text = n.ToString("D2")
+        }).ToList();
+        public List<SelectListItem> minutesNubers { get; set; } = Enumerable.Range(0, 60).Select(n => new SelectListItem
+        {
+            Value = n.ToString("D2"),
+            Text = n.ToString("D2")
+        }).ToList();
     }
 }

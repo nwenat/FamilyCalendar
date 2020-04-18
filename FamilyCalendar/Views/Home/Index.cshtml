@@ -1,5 +1,5 @@
 ﻿@model IndexViewModel
-@*@model SortedList<int, IEnumerable<Event>>*@
+
 @{
     ViewBag.Title = "Twój kalendarz";
     var today = ViewBag.Today;
@@ -20,68 +20,68 @@
 
                 }
 
-                <div class="container-fluid addEventBtn">
-                    <div class="row justify-content-end">
-                        <button @{
-                                var newEventDate = @ViewBag.Monday.AddDays(pair.Key);
-                            } 
-                           class="btn btn-secondary px-2 py-0 addEvent rounded-circle" data-target="#addEvent" data-toggle="modal"  >
-                            
-                            <h3 class=" font-weight-bold">+</h3>
-                        </button>
-                    </div>
-                </div>
 
-                <div class="modal" id="addEvent">
-
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" method="post" class="px-4 py-3">
-                                <input hidden asp-for="eventCreate.UserId" value="@Model.eventsInWeek.First().Value.First().UserId" />
-                                <input hidden asp-for="eventCreate.Date" type="datetime" value="@ViewBag.Monday.AddDays(pair.Key)" />
-                                <h3>Test: @ViewBag.Monday.AddDays(pair.Key).ToString("dd/MM/yyyy")</h3>
-                                <h3>@newEventDate</h3>
-
-                                <div class="form-group">
-                                    <input asp-for="eventCreate.Name" type="text" class="form-control" placeholder="podaj nazwę">
-                                </div>
-
-                                <div class="form-group">
-                                    <label asp-for="eventCreate.Priority"></label>
-                                    <select asp-for="eventCreate.Priority" class="custom-select mr-sm-2"
-                                            asp-items="Html.GetEnumSelectList<Priority>()"></select>
-                                </div>
-
-                                <div class="form-group date" data-provide="datepicker">
-                                    <label for="inputFrom">From</label>
-                                    <input type="text" class="form-control">
-                                    <div class="input-group-addon">
-                                        <span class="glyphicon glyphicon-th"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputTo">To</label>
-                                    <input type="datetime" class="form-control" id="eventTo">
-                                </div>
-
-
-                                <button type="submit" class="btn btn-primary">Dodaj</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         }
     </div>
 
+    <div class="container-fluid m-3 addEventBtn">
+        <div class="row justify-content-end">
+            <button class="btn btn-secondary px-2 py-0 addEvent rounded-circle" data-target="#addEvent" data-toggle="modal">
+                <h3 class=" font-weight-bold">+</h3>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="addEvent">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" method="post" class="px-4 py-3">
+                    <input hidden asp-for="eventCreate.UserId" value="@Model.eventsInWeek.First().Value.First().UserId" />
+
+                    <div class="form-group">
+                        <input asp-for="eventCreate.Name" type="text" class="form-control" placeholder="podaj nazwę" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="eventCreate.Date"></label>
+                        <input asp-for="eventCreate.Date" type="datetime" class="form-control" value="@ViewBag.Monday.AddDays(today).ToString("dd/MM/yyyy")" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class="mr-2">Od:</label>
+                                <select asp-for="eventCreate.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                <label class="mx-2">:</label>
+                                <select asp-for="eventCreate.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class="mr-2">Do:</label>
+                                <select asp-for="eventCreate.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                <label class="mx-2">:</label>
+                                <select asp-for="eventCreate.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="eventCreate.Priority"></label>
+                        <select asp-for="eventCreate.Priority" class="custom-select mr-sm-2"
+                                asp-items="Html.GetEnumSelectList<Priority>()"></select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </div>
-@section Scripts {
-    <script>
-        $('.datepicker').datepicker();
-        $(document).off('.datepicker.data-api');
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy'
-        });
-    </script>
-}

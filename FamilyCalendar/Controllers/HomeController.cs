@@ -44,16 +44,17 @@ namespace FamilyCalendar.Controllers
         [HttpPost]
         public IActionResult CreateEvent(IndexViewModel model)
         {
-            if (ModelState.IsValid)
+            if ((ModelState.IsValid) )
             {
+                EventCrateViewModel eModel = model.eventCreate;
 
                 Event newEvent = new Event
                 {
-                    Name = model.eventCreate.Name,
-                    UserId = model.eventCreate.UserId,
-                    From = model.eventCreate.Date.AddHours(7),
-                    To = model.eventCreate.Date.AddHours(15),
-                    Priority = model.eventCreate.Priority
+                    Name = eModel.Name,
+                    UserId = eModel.UserId,
+                    From = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes),
+                    To = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes),
+                    Priority = eModel.Priority
                 };
 
                 _eventRepository.Add(newEvent);
