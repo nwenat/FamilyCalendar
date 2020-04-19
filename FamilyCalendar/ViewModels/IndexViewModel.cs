@@ -11,6 +11,9 @@ namespace FamilyCalendar.ViewModels
     {
         public SortedList<int, IEnumerable<Event>> eventsInWeek { get; set; }
         public EventCrateViewModel eventCreate { get; set; }
+        public EventEditViewModel eventEdit { get; set; }
+        public int deleteId { get; set; }
+
         public List<SelectListItem> hourNubers { get; set; } = Enumerable.Range(0, 24).Select(n => new SelectListItem
         {
             Value = n.ToString("D2"),

@@ -24,49 +24,53 @@
 
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" method="post" class="px-4 py-3">
+                            <form enctype="multipart/form-data" asp-controller="home" asp-action="EditEvent" method="post" class="px-4 py-3">
                                 <h2 class="tessst"></h2>
-                                <input hidden asp-for="eventCreate.UserId" value="@Model.eventsInWeek.First().Value.First().UserId" />
-                                <div class="form-group eName">
-                                    <input type="text" class="form-control" />
+                                <input hidden asp-for="eventEdit.Id" value=1 />
+                                <input hidden asp-for="eventEdit.UserId" value="@Model.eventsInWeek.First().Value.First().UserId" />
+                                <div class="form-group">
+                                    <input asp-for="eventEdit.Name" type="text" class="form-control" placeholder="Podaj nową nazwę" />
                                 </div>
 
 
-                                <div class="form-group day">
-                                    <label asp-for="eventCreate.Date"></label>
-                                    <input asp-for="eventCreate.Date" type="datetime" class="form-control" />
-                                </div>
+                                @*<div class="form-group day">
+                <label asp-for="eventCreate.Date"></label>
+                <input asp-for="eventCreate.Date" type="datetime" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="mr-2">Od:</label>
+                        <select asp-for="eventCreate.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
+                        <label class="mx-2">:</label>
+                        <select asp-for="eventCreate.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="mr-2">Do:</label>
+                        <select asp-for="eventCreate.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
+                        <label class="mx-2">:</label>
+                        <select asp-for="eventCreate.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                    </div>
+                </div>
+            </div>*@
 
                                 <div class="form-group">
-                                    <div class="form-inline">
-                                        <div class="form-group">
-                                            <label class="mr-2">Od:</label>
-                                            <select asp-for="eventCreate.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
-                                            <label class="mx-2">:</label>
-                                            <select asp-for="eventCreate.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="form-inline">
-                                        <div class="form-group">
-                                            <label class="mr-2">Do:</label>
-                                            <select asp-for="eventCreate.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
-                                            <label class="mx-2">:</label>
-                                            <select asp-for="eventCreate.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label asp-for="eventCreate.Priority"></label>
-                                    <select asp-for="eventCreate.Priority" class="custom-select mr-sm-2"
+                                    <label asp-for="eventEdit.Priority"></label>
+                                    <select asp-for="eventEdit.Priority" class="custom-select mr-sm-2"
                                             asp-items="Html.GetEnumSelectList<Priority>()"></select>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
-                                <a href="#" class="btn btn-danger">Usuń</a>
+                            </form>
+                            <form enctype="multipart/form-data" asp-controller="home" asp-action="DeleteEvent" method="post" class="px-4 py-3">
+                                <input hidden asp-for="deleteId" value=2 />
+                                <button type="submit" class="btn btn-danger">Usuń</button>
                             </form>
                         </div>
                     </div>

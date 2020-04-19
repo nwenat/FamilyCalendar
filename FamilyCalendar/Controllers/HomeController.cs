@@ -64,6 +64,30 @@ namespace FamilyCalendar.Controllers
             return RedirectToAction("index");
         }
 
+        [HttpPost]
+        public IActionResult EditEvent(IndexViewModel model)
+        {
+            if ((ModelState.IsValid))
+            {
+                EventEditViewModel eModel = model.eventEdit;
+
+                Event editEvent = _eventRepository.GetEvent(eModel.Id);
+                editEvent.Name = eModel.Name;
+
+                _eventRepository.Update(editEvent);
+                return RedirectToAction("index");
+            }
+
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEvent(IndexViewModel model)
+        {
+            _eventRepository.Delete(model.deleteId);
+            return RedirectToAction("index");
+        }
+
         public ViewResult Details(int? id)
         {
             //throw new Exception("Error in Details View");
