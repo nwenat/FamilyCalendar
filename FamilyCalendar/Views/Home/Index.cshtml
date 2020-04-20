@@ -15,7 +15,7 @@
             @foreach (var eevent in @pair.Value)
             {
                 <button class="editEvent btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "highP" : "") @(@eevent.Priority == @Priority.MEDIUM ? "mediumP" : "") @(@eevent.Priority == @Priority.LOW ? "lowP" : "")"
-                        data-target="#editEventModal" data-toggle="modal" data-eId="@eevent.Id" >
+                        data-target="#editEventModal" data-toggle="modal" data-eeid="@eevent.Id" data-eename="@eevent.Name" data-eepriority="@eevent.Priority.Value">
                     @eevent.From.ToString("HH:mm") - @eevent.To.ToString("HH:mm") @eevent.Name
                 </button>
 
@@ -31,10 +31,9 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <input type="number" class="tessst"/>
-                                <input hidden asp-for="eventEdit.Id" value=1 />
-                                <div class="form-group">
-                                    <input asp-for="eventEdit.Name" type="text" class="form-control" placeholder="Podaj nową nazwę" />
+                                <input hidden asp-for="eventEdit.Id" class="eeid"/>
+                                <div class="form-group eename">
+                                    <input asp-for="eventEdit.Name" type="text" class="form-control" />
                                 </div>
 
 
@@ -65,16 +64,23 @@
             </div>
         </div>*@
 
-                                <div class="form-group">
+                                <div class="form-group ">
                                     <label asp-for="eventEdit.Priority"></label>
-                                    <select asp-for="eventEdit.Priority" class="custom-select mr-sm-2"
-                                            asp-items="Html.GetEnumSelectList<Priority>()"></select>
+                                    <select asp-for="eventEdit.Priority" class="custom-select mr-sm-2 eepriority"
+                                            asp-items="Html.GetEnumSelectList<Priority>()" ></select>
+                                </div>
+                                <div>
+                                    <select value="2">
+                                        <option value="0">Wysoki0</option>
+                                        <option value="1">Wysoki1</option>
+                                        <option value="2">Wysoki2</option>
+                                    </select>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                             </form>
                             <form enctype="multipart/form-data" asp-controller="home" asp-action="DeleteEvent" method="post" class="px-4 py-3">
-                                <input hidden asp-for="deleteId" value=2 />
+                                <input hidden asp-for="deleteId" class="eeid"/>
                                 <button type="submit" class="btn btn-danger">Usuń</button>
                             </form>
                         </div>
@@ -105,7 +111,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <input hidden asp-for="eventCreate.UserId" value="@Model.eventsInWeek.First().Value.First().UserId" />
+                            <input hidden asp-for="eventCreate.UserId" value="1" />
                             <div class="form-group">
                                 <input asp-for="eventCreate.Name" type="text" class="form-control" placeholder="Podaj nazwę" />
                             </div>
@@ -163,11 +169,13 @@
     <script>
         $('#editEventModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
-            var eId = button.data('eId')
+            var eId = button.data('eeid')
+            var eName = button.data('eename')
+            var ePriority = button.data('eepriority')
             var modal = $(this)
-            modal.find('.tessst').text('tu bedzie id: ' + eId)
-            
-            modal.find('.eName input').text('test test test')
+            modal.find('.eeid').val(eId)
+            modal.find('.eename input').val(eName)
+            modal.find('.eepriority').val(ePriority)
         })
 
         $('#addEventModal').on('show.bs.modal', function (event) {

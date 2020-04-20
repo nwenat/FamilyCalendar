@@ -73,6 +73,7 @@ namespace FamilyCalendar.Controllers
 
                 Event editEvent = _eventRepository.GetEvent(eModel.Id);
                 editEvent.Name = eModel.Name;
+                editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
                 return RedirectToAction("index");
@@ -87,6 +88,20 @@ namespace FamilyCalendar.Controllers
             _eventRepository.Delete(model.deleteId);
             return RedirectToAction("index");
         }
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
 
         public ViewResult Details(int? id)
         {
