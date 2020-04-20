@@ -3,22 +3,22 @@
     width: auto;
 }
 .today{
-    background-color:bisque;
+    background-color:lightskyblue;
 }
 .weekend {
-    background-color:honeydew;
+    background-color:gainsboro;
 }
 
 .btn.highP{
-    background-color:salmon;
+    background-color:lightcoral;
 }
 .btn.mediumP {
-    background-color:lightblue;
+    background-color:cornflowerblue;
 }
 .btn.lowP {
     background-color:palegreen;
 }
 
 .btn.addEvent {
-    background-color: lightslategray;
+    background-color:gray;
 }
