@@ -31,11 +31,77 @@ namespace FamilyCalendar.Controllers
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
-            var model = _eventRepository.GetWeekEvents(dayNumber);
+            IndexViewModel model = new IndexViewModel
+            {
+                eventsInWeek = _eventRepository.GetWeekEvents(dayNumber)
+            };
+
             ViewBag.Today = dayNumber;
             ViewBag.Monday = DateTime.Today.AddDays(-dayNumber);
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult CreateEvent(IndexViewModel model)
+        {
+            if ((ModelState.IsValid) )
+            {
+                EventCrateViewModel eModel = model.eventCreate;
+
+                Event newEvent = new Event
+                {
+                    Name = eModel.Name,
+                    UserId = eModel.UserId,
+                    From = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes),
+                    To = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes),
+                    Priority = eModel.Priority
+                };
+
+                _eventRepository.Add(newEvent);
+                return RedirectToAction("index");
+            }
+
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        public IActionResult EditEvent(IndexViewModel model)
+        {
+            if ((ModelState.IsValid))
+            {
+                EventEditViewModel eModel = model.eventEdit;
+
+                Event editEvent = _eventRepository.GetEvent(eModel.Id);
+                editEvent.Name = eModel.Name;
+                editEvent.Priority = eModel.Priority;
+
+                _eventRepository.Update(editEvent);
+                return RedirectToAction("index");
+            }
+
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteEvent(IndexViewModel model)
+        {
+            _eventRepository.Delete(model.deleteId);
+            return RedirectToAction("index");
+        }
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
 
         public ViewResult Details(int? id)
         {
