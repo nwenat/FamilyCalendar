@@ -15,7 +15,9 @@
             @foreach (var eevent in @pair.Value)
             {
                 <button class="editEvent btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "highP" : "") @(@eevent.Priority == @Priority.MEDIUM ? "mediumP" : "") @(@eevent.Priority == @Priority.LOW ? "lowP" : "")"
-                        data-target="#editEventModal" data-toggle="modal" data-eeid="@eevent.Id" data-eename="@eevent.Name" data-eepriority="@eevent.Priority.Value">
+                        data-target="#editEventModal" data-toggle="modal" data-eeid="@eevent.Id" data-eename="@eevent.Name"
+                        data-eeday="@eevent.From.Date.ToString("dd/MM/yyyy")" data-eepriority="@eevent.Priority.Value"
+                        data-eefromh="@eevent.From.Hour" data-eefromm="@eevent.From.Minute" data-eetoh="@eevent.To.Hour" data-eetom="@eevent.To.Minute">
                     @eevent.From.ToString("HH:mm") - @eevent.To.ToString("HH:mm") @eevent.Name
                 </button>
 
@@ -24,7 +26,7 @@
 
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form enctype="multipart/form-data" asp-controller="home" asp-action="EditEvent" method="post" class="px-4 py-3">
+                            <form enctype="multipart/form-data" asp-controller="home" asp-action="editevent" method="post" class="px-4 py-3">
                                 <div class="modal-header pl-0">
                                     <h5 class="modal-title">Zmień wydarzenie</h5>
                                     <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close">
@@ -37,45 +39,45 @@
                                 </div>
 
 
-                                @*<div class="form-group day">
-            <label asp-for="eventCreate.Date"></label>
-            <input asp-for="eventCreate.Date" type="datetime" class="form-control" />
-        </div>
+                                <div class="form-group day">
+                                    <label asp-for="eventEdit.Date"></label>
+                                    <input asp-for="eventEdit.Date" type="datetime" class="form-control" />
+                                </div>
 
-        <div class="form-group">
-            <div class="form-inline">
-                <div class="form-group">
-                    <label class="mr-2">Od:</label>
-                    <select asp-for="eventCreate.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
-                    <label class="mx-2">:</label>
-                    <select asp-for="eventCreate.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
-                </div>
-            </div>
-        </div>
+                                <div class="form-group">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label class="mr-2">Od:</label>
+                                            <select asp-for="eventEdit.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                            <label class="mx-2">:</label>
+                                            <select asp-for="eventEdit.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <div class="form-group">
-            <div class="form-inline">
-                <div class="form-group">
-                    <label class="mr-2">Do:</label>
-                    <select asp-for="eventCreate.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
-                    <label class="mx-2">:</label>
-                    <select asp-for="eventCreate.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
-                </div>
-            </div>
-        </div>*@
+                                <div class="form-group">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label class="mr-2">Do:</label>
+                                            <select asp-for="eventEdit.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                            <label class="mx-2">:</label>
+                                            <select asp-for="eventEdit.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group ">
                                     <label asp-for="eventEdit.Priority"></label>
                                     <select asp-for="eventEdit.Priority" class="custom-select mr-sm-2 eepriority"
                                             asp-items="Html.GetEnumSelectList<Priority>()" ></select>
                                 </div>
-                                <div>
+                                @*<div>
                                     <select value="2">
                                         <option value="0">Wysoki0</option>
                                         <option value="1">Wysoki1</option>
                                         <option value="2">Wysoki2</option>
                                     </select>
-                                </div>
+                                </div>*@
 
                                 <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                             </form>
@@ -169,13 +171,19 @@
     <script>
         $('#editEventModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
-            var eId = button.data('eeid')
-            var eName = button.data('eename')
-            var ePriority = button.data('eepriority')
+            var eid = button.data('eeid')
+            var ename = button.data('eename')
+            var eday = button.data('eeday')
+            var efromh = button.data('eefromh')
+            var efromm = button.data('eefromm')
+            var etoh = button.data('eetoh')
+            var etom = button.data('eetom')
+            var epriority = button.data('eepriority')
             var modal = $(this)
-            modal.find('.eeid').val(eId)
-            modal.find('.eename input').val(eName)
-            modal.find('.eepriority').val(ePriority)
+            modal.find('.eeid').val(eid)
+            modal.find('.eename input').val(ename)
+            modal.find('.day input').val(eday)
+            modal.find('.eepriority').val(epriority)
         })
 
         $('#addEventModal').on('show.bs.modal', function (event) {

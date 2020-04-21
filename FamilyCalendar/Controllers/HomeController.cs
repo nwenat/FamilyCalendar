@@ -73,6 +73,8 @@ namespace FamilyCalendar.Controllers
 
                 Event editEvent = _eventRepository.GetEvent(eModel.Id);
                 editEvent.Name = eModel.Name;
+                editEvent.From = eModel.Date;
+                editEvent.To = eModel.Date;
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
