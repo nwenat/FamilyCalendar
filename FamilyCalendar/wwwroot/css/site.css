@@ -2,15 +2,21 @@
     height: 200px;
     width: auto;
 }
+
+.alldays{
+    background-color: lavender;
+}
+
 .today{
     background-color:lightskyblue;
 }
+
 .weekend {
     background-color:gainsboro;
 }
 
-.btn.highP{
-    background-color:lightcoral;
+.btn.highP {
+    background-color: lightcoral;
 }
 .btn.mediumP {
     background-color:cornflowerblue;

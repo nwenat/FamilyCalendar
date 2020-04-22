@@ -4,20 +4,20 @@
     ViewBag.Title = "Twój kalendarz";
     var today = ViewBag.Today;
 }
-<div class="container-fluid" style="height:600px; background-color: lavender">
+<div class="container-fluid" style="height:600px">
     <h2 class="text-center m-4">Twój obecny tydzień</h2>
     <div class="row">
         @foreach (var pair in Model.eventsInWeek)
         {
 
-        <div class="col-sm border border-dark rounded p-2 @(pair.Key == today ? "today" : "") @(pair.Key == 6 && pair.Key != today ? "weekend" : "") @(pair.Key == 7 && pair.Key != today ? "weekend" : "") ">
+        <div class="col-sm border border-dark rounded p-2 alldays @(pair.Key == today ? "today" : "") @(pair.Key == 6 && pair.Key != today ? "weekend" : "") @(pair.Key == 7 && pair.Key != today ? "weekend" : "")  ">
             <h5 class="my-3 text-center font-weight-bold"> @ViewBag.Monday.AddDays(pair.Key).ToString("dd/MM/yyyy") </h5>
             @foreach (var eevent in @pair.Value)
             {
                 <button class="editEvent btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "highP" : "") @(@eevent.Priority == @Priority.MEDIUM ? "mediumP" : "") @(@eevent.Priority == @Priority.LOW ? "lowP" : "")"
                         data-target="#editEventModal" data-toggle="modal" data-eeid="@eevent.Id" data-eename="@eevent.Name"
                         data-eeday="@eevent.From.Date.ToString("dd/MM/yyyy")" data-eepriority="@eevent.Priority.Value"
-                        data-eefromh="@eevent.From.Hour" data-eefromm="@eevent.From.Minute" data-eetoh="@eevent.To.Hour" data-eetom="@eevent.To.Minute">
+                        data-eefromh="@eevent.From.ToString("HH")" data-eefromm="@eevent.From.ToString("mm")" data-eetoh="@eevent.To.ToString("HH")" data-eetom="@eevent.To.ToString("mm")">
                     @eevent.From.ToString("HH:mm") - @eevent.To.ToString("HH:mm") @eevent.Name
                 </button>
 
@@ -48,9 +48,9 @@
                                     <div class="form-inline">
                                         <div class="form-group">
                                             <label class="mr-2">Od:</label>
-                                            <select asp-for="eventEdit.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                            <select asp-for="eventEdit.FromHour" class="form-control fromh" asp-items="Model.hourNubers"></select>
                                             <label class="mx-2">:</label>
-                                            <select asp-for="eventEdit.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                            <select asp-for="eventEdit.FromMinutes" class="form-control fromm" asp-items="Model.minutesNubers"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -59,16 +59,16 @@
                                     <div class="form-inline">
                                         <div class="form-group">
                                             <label class="mr-2">Do:</label>
-                                            <select asp-for="eventEdit.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
+                                            <select asp-for="eventEdit.ToHour" class="form-control toh" asp-items="Model.hourNubers"></select>
                                             <label class="mx-2">:</label>
-                                            <select asp-for="eventEdit.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                            <select asp-for="eventEdit.ToMinutes" class="form-control tom" asp-items="Model.minutesNubers"></select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group ">
+                                <div class="form-group">
                                     <label asp-for="eventEdit.Priority"></label>
-                                    <select asp-for="eventEdit.Priority" class="custom-select mr-sm-2 eepriority"
+                                    <select asp-for="eventEdit.Priority" class="eeepriority custom-select mr-sm-2"
                                             asp-items="Html.GetEnumSelectList<Priority>()" ></select>
                                 </div>
                                 @*<div>
@@ -129,7 +129,7 @@
                                         <label class="mr-2">Od:</label>
                                         <select asp-for="eventCreate.FromHour" class="form-control" asp-items="Model.hourNubers"></select>
                                         <label class="mx-2">:</label>
-                                        <select asp-for="eventCreate.FromMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                        <select asp-for="eventCreate.FromMinutes" class="form-control" asp-items="Model.minutesNubers"></select>
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                                         <label class="mr-2">Do:</label>
                                         <select asp-for="eventCreate.ToHour" class="form-control" asp-items="Model.hourNubers"></select>
                                         <label class="mx-2">:</label>
-                                        <select asp-for="eventCreate.ToMinutes" type="number" class="form-control" asp-items="Model.minutesNubers"></select>
+                                        <select asp-for="eventCreate.ToMinutes" class="form-control" asp-items="Model.minutesNubers"></select>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +183,11 @@
             modal.find('.eeid').val(eid)
             modal.find('.eename input').val(ename)
             modal.find('.day input').val(eday)
-            modal.find('.eepriority').val(epriority)
+            modal.find('.fromh').val(efromh)
+            modal.find('.fromm').val(efromm)
+            modal.find('.toh').val(etoh)
+            modal.find('.tom').val(etom)
+            //modal.find('.eeepriority').val(epriority)
         })
 
         $('#addEventModal').on('show.bs.modal', function (event) {

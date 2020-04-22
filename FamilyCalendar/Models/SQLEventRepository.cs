@@ -66,7 +66,7 @@ namespace FamilyCalendar.Models
             for(int i = 1; i < 8; i++)
             {
                 DateTime dayI = DateTime.Today.AddDays(-dayNumber + i);
-                weekEvents.Add(i, context.Events.Where(e => e.From.Day == dayI.Day));
+                weekEvents.Add(i, context.Events.Where(e => e.From.Day == dayI.Day).OrderBy(e => e.From));
             }
             return weekEvents;
         }
