@@ -27,7 +27,7 @@ namespace FamilyCalendar.Controllers
             this.logger = logger;
         }
 
-        public ViewResult Index()
+        public ViewResult Index(int index)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
@@ -48,12 +48,20 @@ namespace FamilyCalendar.Controllers
             {
                 EventCrateViewModel eModel = model.eventCreate;
 
+                DateTime fromModel = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes);
+                DateTime toModel = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes);
+
+                if (toModel < fromModel)
+                {
+                    toModel = fromModel;
+                }
+
                 Event newEvent = new Event
                 {
                     Name = eModel.Name,
                     UserId = eModel.UserId,
-                    From = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes),
-                    To = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes),
+                    From = fromModel,
+                    To = toModel,
                     Priority = eModel.Priority
                 };
 
@@ -73,6 +81,17 @@ namespace FamilyCalendar.Controllers
 
                 Event editEvent = _eventRepository.GetEvent(eModel.Id);
                 editEvent.Name = eModel.Name;
+
+                DateTime fromModel = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes);
+                DateTime toModel = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes);
+
+                if (toModel < fromModel)
+                {
+                    toModel = fromModel;
+                }
+
+                editEvent.From = fromModel;
+                editEvent.To = toModel;
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
