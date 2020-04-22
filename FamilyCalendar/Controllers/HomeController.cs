@@ -27,13 +27,17 @@ namespace FamilyCalendar.Controllers
             this.logger = logger;
         }
 
-        public ViewResult Index(int index)
+        public ViewResult Index(int? index)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
+
+            int indexWeek = index.HasValue ? index.Value : 0;
+
             IndexViewModel model = new IndexViewModel
             {
-                eventsInWeek = _eventRepository.GetWeekEvents(dayNumber)
+                eventsInWeek = _eventRepository.GetWeekEvents(dayNumber, indexWeek),
+                index = indexWeek
             };
 
             ViewBag.Today = dayNumber;

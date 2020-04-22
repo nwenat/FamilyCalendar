@@ -12,7 +12,6 @@ namespace FamilyCalendar.Models
         Event Add(Event newEvent);
         Event Update(Event eventChanges);
         Event Delete(int id);
-        IEnumerable<Event> GetMondayEvents();
-        SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayNumber);
+        SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayNumber, int indexWeek);
     }
 }
