@@ -27,17 +27,17 @@ namespace FamilyCalendar.Controllers
             this.logger = logger;
         }
 
-        public ViewResult Index(int? index)
+        public ViewResult Index(int? page)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
 
-            int indexWeek = index.HasValue ? index.Value : 0;
+            int indexWeek = page.HasValue ? page.Value : 0;
 
             IndexViewModel model = new IndexViewModel
             {
                 eventsInWeek = _eventRepository.GetWeekEvents(dayNumber, indexWeek),
-                index = indexWeek
+                page = indexWeek
             };
 
             ViewBag.Today = dayNumber;
@@ -70,10 +70,10 @@ namespace FamilyCalendar.Controllers
                 };
 
                 _eventRepository.Add(newEvent);
-                return RedirectToAction("index");
+                return RedirectToAction("index", new { page = model.page });
             }
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
         [HttpPost]
@@ -99,17 +99,17 @@ namespace FamilyCalendar.Controllers
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
-                return RedirectToAction("index");
+                return RedirectToAction("index", new { page = model.page });
             }
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
         [HttpPost]
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
 
