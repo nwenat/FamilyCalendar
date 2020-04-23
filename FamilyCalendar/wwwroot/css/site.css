@@ -28,3 +28,11 @@
 .btn.greybtn {
     background-color:gray;
 }
+
+.navbar.greynav {
+    background-color: gray;
+}
+
+.addEventBtn{
+    background-color:orchid;
+}
