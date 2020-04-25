@@ -31,7 +31,7 @@ namespace FamilyCalendar
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 3;
-                options.Password.RequiredUniqueChars = 3;
+                options.Password.RequiredUniqueChars = 2;
             }).AddEntityFrameworkStores<AppDbContext>();
 
             services.AddMvc().AddXmlSerializerFormatters();
@@ -57,7 +57,7 @@ namespace FamilyCalendar
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute("default", "{controller=Home}/{action=Index}");
             });
 
         }

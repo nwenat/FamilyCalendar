@@ -26,7 +26,7 @@
         @foreach (var pair in Model.eventsInWeek)
         {
 
-        <div class="col-sm border border-dark rounded p-2 alldays @(pair.Key == today ? "today" : "") @((pair.Key % 7 == 6 || pair.Key % 7 == -1 || pair.Key % 7 == 0 ) && pair.Key != today ? "weekend" : "")">
+        <div class="col-sm border border-dark rounded p-2 @((pair.Key % 7 == 6 || pair.Key % 7 == -1 || pair.Key % 7 == 0 ) && pair.Key != today ? "weekend" : "alldays") @(pair.Key == today ? "today" : "")">
             <h5 class="my-3 text-center font-weight-bold"> @ViewBag.Monday.AddDays(pair.Key).ToString("dd/MM/yyyy") </h5>
             @foreach (var eevent in @pair.Value)
             {

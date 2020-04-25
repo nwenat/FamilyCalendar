@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.ViewModels
 {
-    public class RegisterViewModel
+    public class LoginViewModel
     {
-        [Required(ErrorMessage ="Nazwa jest wymagana!")]
+        [Required(ErrorMessage = "Nazwa jest wymagana!")]
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
@@ -17,9 +17,7 @@ namespace FamilyCalendar.ViewModels
         [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Potwierdź hasło")]
-        [Compare("Password", ErrorMessage = "Podane hasła są różne!")]
-        public string ConfirmPassword { get; set; }
+        [Display(Name = "Zapamiętaj mnie")]
+        public bool RememberMe { get; set; }
     }
 }
