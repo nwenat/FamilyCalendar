@@ -9,6 +9,8 @@
         <link href="~/css/site.css" rel="stylesheet" />
         <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/bootstrap/js/bootstrap.js"></script>
     </environment>
     <environment exclude="Development">
@@ -51,9 +53,9 @@
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <form method="post" asp-action="logout" asp-controller="account" class="nav-link">
-                                    <button type="submit" class="nav-link">
-                                        <h5 class=" font-weight-bold text-white">Wyloguj</h5>
+                                <form method="post" asp-action="logout" asp-controller="account">
+                                    <button type="submit" class="nav-link btn btn-link greybtn">
+                                        <h5 class=" font-weight-bold text-white">Wyloguj @User.Identity.Name</h5>
                                     </button>
                                 </form>
                             </li>

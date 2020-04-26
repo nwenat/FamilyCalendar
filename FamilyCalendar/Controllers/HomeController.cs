@@ -1,5 +1,6 @@
 ﻿using FamilyCalendar.Models;
 using FamilyCalendar.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CreateEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid) )
@@ -77,6 +79,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult EditEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid))
@@ -106,6 +109,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
@@ -155,12 +159,14 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(EmployeeCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -184,6 +190,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Edit(int id)
         {
             Employee employee = _employeeRepository.GetEmployee(id);
@@ -199,6 +206,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
             if (ModelState.IsValid)

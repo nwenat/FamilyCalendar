@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FamilyCalendar.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,12 +31,27 @@ namespace FamilyCalendar.Controllers
 
         // GET: /<controller>/
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsNameInUse(string name)
+        {
+            var user = await userManager.FindByNameAsync(name);
+
+            if(user == null)
+            {
+                return Json(true);
+            }
+            return Json($"Nazwa {name} już istnieje");
+        }
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -57,17 +73,19 @@ namespace FamilyCalendar.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            return View(model);
+            return View();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -75,9 +93,15 @@ namespace FamilyCalendar.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "home");
+                    }
                 }
-
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(model);

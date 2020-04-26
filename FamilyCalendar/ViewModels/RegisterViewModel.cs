@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace FamilyCalendar.ViewModels
     {
         [Required(ErrorMessage ="Nazwa jest wymagana!")]
         [Display(Name = "Nazwa")]
+        [Remote(action: "IsNameInUse", controller:"Account")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane!")]
