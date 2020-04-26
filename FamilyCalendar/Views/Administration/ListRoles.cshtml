@@ -8,19 +8,38 @@
 
     @if (Model.Any())
     {
-    <div class="col">
-        <h1 class="text-center">Wszystkie role</h1>
+        <div class="col">
+            <h1 class="text-center">Wszystkie role</h1>
 
-        @foreach (var role in Model)
-        {
-            <h3>Role id: @role.Id</h3>
-            <h3>Rola: @role.Name</h3>
+            @foreach (var role in Model)
+            {
 
-            <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
-            <a href="#" class="btn btn-danger">Delete</a>
-        }
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Role id: @role.Id</h3>
+                    </div>
+                    <div class="card-body">
+                        <h3>Rola: @role.Name</h3>
+                    </div>
+                    <div class="card-footer">
+                        <form method="post" asp-action="DeleteRole" asp-route-id="@role.Id">
+                            <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
+                            <span id="confirmDeleteSpan_@role.Id" style="display:none">
+                                <span>Are you sure you want to delete?</span>
+                                <button type="submit" class="btn btn-danger">Yes</button>
+                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.Id', false)">No</a>
+                            </span>
+                            <span id="deleteSpan_@role.Id">
+                                <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                            </span>
+                        </form>
+                    </div>
+                </div>
 
-    </div>
+
+            }
+
+        </div>
     }
     else
     {
@@ -30,7 +49,11 @@
         </div>
     }
 
-        <div>
-            <a asp-controller="administration" asp-action="createrole" class="btn btn-primary">Stwórz rolę</a>
-        </div>
+    <div>
+        <a asp-controller="administration" asp-action="createrole" class="btn btn-primary">Stwórz rolę</a>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/CustomScript.js"></script>
+}
