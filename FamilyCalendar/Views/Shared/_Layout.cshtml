@@ -39,6 +39,20 @@
                                 <h5 class=" font-weight-bold text-white">Kalendarz</h5>
                             </a>
                         </li>
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                        <li class="nav-item">
+                            <a asp-action="ListRoles" asp-controller="Administration" class="nav-link">
+                                <h5 class=" font-weight-bold text-white">Menager roli</h5>
+                            </a>
+                            </li>
+                            <li>
+                            <a asp-action="ListUsers" asp-controller="Administration" class="nav-link">
+                                <h5 class=" font-weight-bold text-white">Menager użytkowników</h5>
+                            </a>
+                        </li>
+                        }
+
                     </ul>
 
                     @*<ul class="navbar-nav">

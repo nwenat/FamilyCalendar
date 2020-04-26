@@ -1,0 +1,36 @@
+﻿@model IEnumerable<IdentityUser>
+
+@{
+    ViewBag.Title = "Wszyscy użytkownicy";
+}
+
+<div class="container">
+
+    @if (Model.Any())
+    {
+        <div class="col">
+            <h1 class="text-center">Wszyscy użytkownicy</h1>
+
+            @foreach (var user in Model)
+            {
+                <h3>Role id: @user.Id</h3>
+                <h3>Rola: @user.UserName</h3>
+
+                <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@user.Id" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-danger">Delete</a>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="col">
+            <h1 class="text-center">Nie ma żadnych użytkowników</h1>
+
+        </div>
+    }
+
+    <div>
+        <a asp-controller="Account" asp-action="Register" class="btn btn-primary">Stwórz użytkownika</a>
+    </div>
+</div>
