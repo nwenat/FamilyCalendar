@@ -43,7 +43,7 @@
                     }
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn badge-primary">Manage Roles</a>
+                    <a asp-action="ManageUserRoles" asp-route-userId="@Model.Id" class="btn badge-primary">Manage Roles</a>
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
                     }
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn badge-primary">Manage Claims</a>
+                    <a asp-action="ManageUserClaims" asp-route-userId="@Model.Id" class="btn badge-primary">Manage Claims</a>
                 </div>
             </div>
         </form>

@@ -42,6 +42,12 @@ namespace FamilyCalendar
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).AddXmlSerializerFormatters();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            });
+
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             services.AddScoped<IEventRepository, SQLEventRepository>();
         }
