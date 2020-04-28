@@ -79,7 +79,7 @@ namespace FamilyCalendar.Controllers
                 {
                     ClaimType = claim.Type
                 };
-                if (existingUserClaims.Any(c => c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type && c.Value == "true"))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -109,7 +109,7 @@ namespace FamilyCalendar.Controllers
                 return View(model);
             }
 
-            result = await userManager.AddClaimsAsync(user, model.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+            result = await userManager.AddClaimsAsync(user, model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Cannot add selected claims to user");
@@ -250,7 +250,7 @@ namespace FamilyCalendar.Controllers
             {
                 Id = user.Id,
                 UserName = user.UserName,
-                Claims = userClaims.Select(c => c.Value).ToList(),
+                Claims = userClaims.Select(c => c.Type + " : " + c.Value).ToList(),
                 Roles = userRoles.ToList()
             };
 
