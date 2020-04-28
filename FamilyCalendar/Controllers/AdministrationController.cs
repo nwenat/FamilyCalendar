@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -79,7 +79,7 @@ namespace FamilyCalendar.Controllers
                 {
                     ClaimType = claim.Type
                 };
-                if (existingUserClaims.All(c => c.Type == claim.Type))
+                if (existingUserClaims.Any(c => c.Type == claim.Type))
                 {
                     userClaim.IsSelected = true;
                 }
@@ -323,6 +323,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -351,6 +352,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "EditRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);

@@ -46,6 +46,10 @@ namespace FamilyCalendar
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+
+                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role"));
+
+                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
             });
 
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
