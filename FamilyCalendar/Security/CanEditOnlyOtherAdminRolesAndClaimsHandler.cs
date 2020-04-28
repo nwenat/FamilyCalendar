@@ -26,7 +26,6 @@ namespace FamilyCalendar.Security
             {
                 context.Succeed(requirement);
             }
-
             return Task.CompletedTask;
         }
     }
