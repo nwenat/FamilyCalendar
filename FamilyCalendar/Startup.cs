@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using FamilyCalendar.Security;
 
 namespace FamilyCalendar
 {
@@ -52,13 +53,16 @@ namespace FamilyCalendar
             {
                 options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
 
-                options.AddPolicy("EditRolePolicy", policy => policy.RequireClaim("Edit Role", "true"));
+                options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+
 
                 options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
             });
 
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             services.AddScoped<IEventRepository, SQLEventRepository>();
+
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
