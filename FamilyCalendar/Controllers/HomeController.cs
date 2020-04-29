@@ -1,5 +1,8 @@
 ﻿using FamilyCalendar.Models;
+using FamilyCalendar.Security;
 using FamilyCalendar.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,26 +21,29 @@ namespace FamilyCalendar.Controllers
         private readonly IEventRepository _eventRepository;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
+        private readonly IDataProtector protector;
 
-        public HomeController(IEmployeeRepository employeeRepository, IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger)
+        public HomeController(IEmployeeRepository employeeRepository, IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger,
+                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings)
         {
             _employeeRepository = employeeRepository;
             _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
+            protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
-        public ViewResult Index(int? index)
+        public ViewResult Index(int? page)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
 
-            int indexWeek = index.HasValue ? index.Value : 0;
+            int indexWeek = page.HasValue ? page.Value : 0;
 
             IndexViewModel model = new IndexViewModel
             {
                 eventsInWeek = _eventRepository.GetWeekEvents(dayNumber, indexWeek),
-                index = indexWeek
+                page = indexWeek
             };
 
             ViewBag.Today = dayNumber;
@@ -46,6 +52,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CreateEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid) )
@@ -70,13 +77,14 @@ namespace FamilyCalendar.Controllers
                 };
 
                 _eventRepository.Add(newEvent);
-                return RedirectToAction("index");
+                return RedirectToAction("index", new { page = model.page });
             }
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult EditEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid))
@@ -99,17 +107,18 @@ namespace FamilyCalendar.Controllers
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
-                return RedirectToAction("index");
+                return RedirectToAction("index", new { page = model.page });
             }
 
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
-            return RedirectToAction("index");
+            return RedirectToAction("index", new { page = model.page });
         }
 
 
@@ -155,12 +164,14 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(EmployeeCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -184,6 +195,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Edit(int id)
         {
             Employee employee = _employeeRepository.GetEmployee(id);
@@ -199,6 +211,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
             if (ModelState.IsValid)

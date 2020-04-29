@@ -13,7 +13,7 @@ namespace FamilyCalendar.ViewModels
         public EventCrateViewModel eventCreate { get; set; }
         public EventEditViewModel eventEdit { get; set; }
         public int deleteId { get; set; }
-        public int index { get; set; }
+        public int page { get; set; }
 
         public List<SelectListItem> hourNubers { get; set; } = Enumerable.Range(0, 24).Select(n => new SelectListItem
         {

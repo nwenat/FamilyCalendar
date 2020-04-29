@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>FamilyCalendar</RootNamespace>
+    <UserSecretsId>459d6f92-8fb0-424e-bf0c-6a7480b581ec</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

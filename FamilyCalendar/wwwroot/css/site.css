@@ -1,7 +1,7 @@
-﻿.imageThumbnail {
+﻿/*.imageThumbnail {
     height: 200px;
     width: auto;
-}
+}*/
 
 .alldays{
     background-color: lavender;
@@ -27,4 +27,14 @@
 
 .btn.greybtn {
     background-color:gray;
+}
+
+.navbar.greynav {
+    background-color: gray;
+}
+
+.bottomdiv {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
 }
