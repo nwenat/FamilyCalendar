@@ -14,7 +14,7 @@ namespace FamilyCalendar.ViewModels
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         [Display(Name = "Data:")]
         public DateTime Date { get; set; }

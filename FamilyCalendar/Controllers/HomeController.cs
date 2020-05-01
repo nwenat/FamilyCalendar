@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -21,15 +22,17 @@ namespace FamilyCalendar.Controllers
         private readonly IEventRepository _eventRepository;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
+        //private readonly UserManager<IdentityUser> userManager;
         private readonly IDataProtector protector;
 
         public HomeController(IEmployeeRepository employeeRepository, IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger,
-                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings)
+                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings, UserManager<IdentityUser> userManager)
         {
             _employeeRepository = employeeRepository;
             _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
+            //this.userManager = userManager;
             protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
@@ -39,6 +42,8 @@ namespace FamilyCalendar.Controllers
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
 
             int indexWeek = page.HasValue ? page.Value : 0;
+
+            //string userId = await userManager.GetUserIdAsync();
 
             IndexViewModel model = new IndexViewModel
             {
@@ -52,7 +57,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult CreateEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid) )
@@ -84,7 +89,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult EditEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid))
@@ -114,7 +119,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
@@ -164,14 +169,14 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public ViewResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult Create(EmployeeCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -195,7 +200,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public ViewResult Edit(int id)
         {
             Employee employee = _employeeRepository.GetEmployee(id);
@@ -211,7 +216,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
             if (ModelState.IsValid)

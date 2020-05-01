@@ -12,6 +12,7 @@ namespace FamilyCalendar.ViewModels
         public SortedList<int, IEnumerable<Event>> eventsInWeek { get; set; }
         public EventCrateViewModel eventCreate { get; set; }
         public EventEditViewModel eventEdit { get; set; }
+        public string userId { get; set; }
         public int deleteId { get; set; }
         public int page { get; set; }
 

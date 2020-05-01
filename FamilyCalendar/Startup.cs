@@ -38,28 +38,32 @@ namespace FamilyCalendar
                 options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            }).AddXmlSerializerFormatters();
+            //services.AddMvc(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //}).AddXmlSerializerFormatters();
+
+            // !!!!!!!!!!!zamiast tego u gory
+            services.AddMvc().AddXmlSerializerFormatters();
+
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
 
-                options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+            //    options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
 
-                //options.InvokeHandlersAfterFailure = false;
+            //    //options.InvokeHandlersAfterFailure = false;
 
 
-                options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
-            });
+            //    options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
+            //});
 
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             services.AddScoped<IEventRepository, SQLEventRepository>();
