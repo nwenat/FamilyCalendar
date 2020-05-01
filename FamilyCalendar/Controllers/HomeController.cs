@@ -22,7 +22,7 @@ namespace FamilyCalendar.Controllers
         private readonly IEventRepository _eventRepository;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
-        //private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<IdentityUser> userManager;
         private readonly IDataProtector protector;
 
         public HomeController(IEmployeeRepository employeeRepository, IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger,
@@ -32,27 +32,38 @@ namespace FamilyCalendar.Controllers
             _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
-            //this.userManager = userManager;
+            this.userManager = userManager;
             protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
-        public ViewResult Index(int? page)
+        [HttpGet]
+        public async Task<ViewResult> Index(string userN, int? page)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
 
             int indexWeek = page.HasValue ? page.Value : 0;
 
-            //string userId = await userManager.GetUserIdAsync();
-
             IndexViewModel model = new IndexViewModel
             {
-                eventsInWeek = _eventRepository.GetWeekEvents(dayNumber, indexWeek),
+                eventsInWeek = new SortedList<int, IEnumerable<Event>>(),
                 page = indexWeek
             };
 
+            if (userN != null)
+            {
+                var user = await userManager.FindByNameAsync(userN);
+
+                if (user != null)
+                {
+                    model.eventsInWeek = _eventRepository.GetWeekEventsPerUser(dayNumber, indexWeek, user.Id);
+                }
+
+            }
+
             ViewBag.Today = dayNumber;
             ViewBag.Monday = DateTime.Today.AddDays(-dayNumber);
+            //ViewBag.Test = testName;
             return View(model);
         }
 
