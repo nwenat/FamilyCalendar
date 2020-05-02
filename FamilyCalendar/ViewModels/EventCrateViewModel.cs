@@ -13,8 +13,8 @@ namespace FamilyCalendar.ViewModels
         [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
-        [Required]
-        public string UserId { get; set; }
+        //[Required]
+        //public string UName { get; set; }
         [Required]
         [Display(Name = "Data:")]
         public DateTime Date { get; set; }

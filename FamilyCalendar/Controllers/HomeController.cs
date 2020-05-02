@@ -69,7 +69,7 @@ namespace FamilyCalendar.Controllers
 
         [HttpPost]
         //[Authorize]
-        public IActionResult CreateEvent(IndexViewModel model)
+        public async Task<IActionResult> CreateEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid) )
             {
@@ -82,21 +82,27 @@ namespace FamilyCalendar.Controllers
                 {
                     toModel = fromModel;
                 }
-
-                Event newEvent = new Event
+                if (model.userN != null)
                 {
-                    Name = eModel.Name,
-                    UserId = eModel.UserId,
-                    From = fromModel,
-                    To = toModel,
-                    Priority = eModel.Priority
-                };
+                    var user = await userManager.FindByNameAsync(model.userN);
 
-                _eventRepository.Add(newEvent);
-                return RedirectToAction("index", new { page = model.page });
+                    Event newEvent = new Event
+                    {
+                        Name = eModel.Name,
+                        UserId = user.Id,
+                        From = fromModel,
+                        To = toModel,
+                        Priority = eModel.Priority
+                    };
+
+                    _eventRepository.Add(newEvent);
+
+                }
+                
+                return RedirectToAction("index", new { userN = model.userN, page = model.page });
             }
 
-            return RedirectToAction("index", new { page = model.page });
+            return RedirectToAction("index", new { userN = model.userN, page = model.page });
         }
 
         [HttpPost]
@@ -123,10 +129,10 @@ namespace FamilyCalendar.Controllers
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
-                return RedirectToAction("index", new { page = model.page });
+                return RedirectToAction("index", new { userN = model.userN, page = model.page });
             }
 
-            return RedirectToAction("index", new { page = model.page });
+            return RedirectToAction("index", new { userN = model.userN, page = model.page });
         }
 
         [HttpPost]
@@ -134,7 +140,7 @@ namespace FamilyCalendar.Controllers
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
-            return RedirectToAction("index", new { page = model.page });
+            return RedirectToAction("index", new { userN = model.userN, page = model.page });
         }
 
 

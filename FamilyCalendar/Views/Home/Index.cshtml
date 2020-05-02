@@ -48,7 +48,7 @@
                             <div class="modal" id="editEventModal">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form enctype="multipart/form-data" asp-controller="home" asp-action="editevent" asp-route-page="@Model.page" method="post" class="px-4 py-3">
+                                        <form enctype="multipart/form-data" asp-controller="home" asp-action="editevent" asp-route-page="@Model.page" asp-route-userN="@User.Identity.Name" method="post" class="px-4 py-3">
                                             <div class="modal-header pl-0">
                                                 <h5 class="modal-title">Zmień wydarzenie</h5>
                                                 <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close">
@@ -90,7 +90,7 @@
                                             </div>
                                             <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                                         </form>
-                                        <form enctype="multipart/form-data" asp-controller="home" asp-action="deleteevent" asp-route-page="@Model.page " method="post" class="px-4 py-3">
+                                        <form enctype="multipart/form-data" asp-controller="home" asp-action="deleteevent" asp-route-page="@Model.page" asp-route-userN="@User.Identity.Name" method="post" class="px-4 py-3">
                                             <input hidden asp-for="deleteId" class="eeid" />
                                             <button type="submit" class="btn btn-danger">Usuń</button>
                                         </form>
@@ -108,14 +108,13 @@
                     <div class="modal" id="addEventModal">
                         <div class="modal-dialog" role="dialog">
                             <div class="modal-content">
-                                <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" asp-route-page="@Model.page" method="post" class="px-4 py-3">
+                                <form enctype="multipart/form-data" asp-controller="home" asp-action="createevent" asp-route-page="@Model.page" asp-route-userN="@User.Identity.Name" method="post" class="px-4 py-3">
                                     <div class="modal-header pl-0">
                                         <h5 class="modal-title">Dodaj wydarzenie</h5>
                                         <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <input hidden asp-for="eventCreate.UserId" value="1" />
                                     <div class="form-group">
                                         <input asp-for="eventCreate.Name" type="text" class="form-control" placeholder="Podaj nazwę" />
                                     </div>
