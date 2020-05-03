@@ -27,6 +27,65 @@ namespace FamilyCalendar.Controllers
             this.logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult CreateGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup(CreateGruopViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = model.GroupName
+                };
+                IdentityResult result = await roleManager.CreateAsync(identityRole);
+
+                if (result.Succeeded)
+                {
+                    var user = await userManager.FindByNameAsync(model.userName);
+
+                    if (user == null)
+                    {
+                        ViewBag.ErrorMessage = $"Not found user with name: {model.userName}";
+                        return View("NotFound");
+                    }
+
+                    result = await userManager.AddClaimAsync(user, new Claim("Group Admin", "true"));
+
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Cannot add Group Admin claim to user");
+                        return View(model);
+                    }
+
+                    result = await userManager.AddToRoleAsync(user, identityRole.Name);
+
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Cannot add Group Admin claim to user");
+                        return View(model);
+                    }
+
+                    return RedirectToAction("ListRoles", "Administration");
+                }
+
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
+
+
+
+
+
+
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {

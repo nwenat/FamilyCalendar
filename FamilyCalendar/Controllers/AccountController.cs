@@ -104,7 +104,7 @@ namespace FamilyCalendar.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("index", "home", new { userN = model.Name});
+                        return RedirectToAction("index", "home", new { uN = model.Name});
                     }
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

@@ -37,7 +37,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        public async Task<ViewResult> Index(string userN, int? page)
+        public async Task<ViewResult> Index(string uN, int? page)
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
@@ -50,9 +50,9 @@ namespace FamilyCalendar.Controllers
                 page = indexWeek
             };
 
-            if (userN != null)
+            if (uN != null)
             {
-                var user = await userManager.FindByNameAsync(userN);
+                var user = await userManager.FindByNameAsync(uN);
 
                 if (user != null)
                 {
@@ -82,9 +82,9 @@ namespace FamilyCalendar.Controllers
                 {
                     toModel = fromModel;
                 }
-                if (model.userN != null)
+                if (model.uN != null)
                 {
-                    var user = await userManager.FindByNameAsync(model.userN);
+                    var user = await userManager.FindByNameAsync(model.uN);
 
                     Event newEvent = new Event
                     {
@@ -99,10 +99,10 @@ namespace FamilyCalendar.Controllers
 
                 }
                 
-                return RedirectToAction("index", new { userN = model.userN, page = model.page });
+                return RedirectToAction("index", new { uN = model.uN, page = model.page });
             }
 
-            return RedirectToAction("index", new { userN = model.userN, page = model.page });
+            return RedirectToAction("index", new { uN = model.uN, page = model.page });
         }
 
         [HttpPost]
@@ -129,10 +129,10 @@ namespace FamilyCalendar.Controllers
                 editEvent.Priority = eModel.Priority;
 
                 _eventRepository.Update(editEvent);
-                return RedirectToAction("index", new { userN = model.userN, page = model.page });
+                return RedirectToAction("index", new { uN = model.uN, page = model.page });
             }
 
-            return RedirectToAction("index", new { userN = model.userN, page = model.page });
+            return RedirectToAction("index", new { uN = model.uN, page = model.page });
         }
 
         [HttpPost]
@@ -140,7 +140,7 @@ namespace FamilyCalendar.Controllers
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);
-            return RedirectToAction("index", new { userN = model.userN, page = model.page });
+            return RedirectToAction("index", new { uN = model.uN, page = model.page });
         }
 
 
