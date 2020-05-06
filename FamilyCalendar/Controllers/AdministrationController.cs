@@ -70,7 +70,7 @@ namespace FamilyCalendar.Controllers
                         return View(model);
                     }
 
-                    return RedirectToAction("ListRoles", "Administration");
+                    return RedirectToAction("EditGroup", "Administration", new { uN = model.userName});
                 }
 
                 foreach (IdentityError error in result.Errors)
@@ -80,6 +80,75 @@ namespace FamilyCalendar.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditGroup(string uN)
+        {
+            var userAdministrator = await userManager.FindByNameAsync(uN);
+            var groups = roleManager.Roles;
+
+            var model = new EditGroupViewModel();
+
+            foreach(var group in roleManager.Roles)
+            {
+                if(await userManager.IsInRoleAsync(userAdministrator, group.Name))
+                {
+                    model.Id = group.Id;
+                    model.GroupName = group.Name;
+
+                    foreach (var user in userManager.Users)
+                    {
+                        if (await userManager.IsInRoleAsync(user, group.Name))
+                        {
+                            model.Users.Add(user.UserName);
+                        }
+                    }
+                }
+            }
+
+            if (!groups.Any())
+            {
+                ViewBag.ErrorMessage = $"Not found group";
+                return View("NotFound");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGroup(EditGroupViewModel model)
+        {
+            var group = await roleManager.FindByIdAsync(model.Id);
+
+            if (group == null)
+            {
+                ViewBag.ErrorMessage = $"Not found group with id: {model.Id}";
+                return View("NotFound");
+            }
+            else
+            {
+                group.Name = model.GroupName;
+                var result = await roleManager.UpdateAsync(group);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
+        }
+
+
+
+
+
+
+
+
 
 
 
