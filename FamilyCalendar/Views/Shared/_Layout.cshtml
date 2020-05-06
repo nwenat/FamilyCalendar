@@ -41,37 +41,44 @@
                     <ul class="navbar-nav">
 
                         @if (signInManager.IsSignedIn(User)@*&& User.IsInRole("Admin")*@)
-{
-<li class="nav-item">
-    <a asp-action="index" asp-controller="home" asp-route-uN="@User.Identity.Name" class="nav-link">
-        <h5 class=" font-weight-bold text-white">Kalendarz</h5>
-    </a>
-</li>
-<li class="nav-item">
-    <a asp-action="CreateGroup" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="nav-link">
-        <h5 class=" font-weight-bold text-white">Stwórz grupę</h5>
-    </a>
-</li>
-@if (User.HasClaim(c => c.Type == "Group Admin" && c.Value == "true"))
-{
-    <li class="nav-item">
-        <a asp-action="EditGroup" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="nav-link">
-            <h5 class=" font-weight-bold text-white">Edytuj grupę???;(</h5>
-        </a>
-    </li>
-}
+                            {
+                            <li class="nav-item">
+                                <a asp-action="index" asp-controller="home" asp-route-uN="@User.Identity.Name" class="nav-link">
+                                    <h5 class=" font-weight-bold text-white">Kalendarz</h5>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="CreateGroup" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="nav-link">
+                                    <h5 class=" font-weight-bold text-white">Stwórz grupę</h5>
+                                </a>
+                            </li>
+                            @if (User.HasClaim(c => c.Type == "Group Admin" && c.Value == "true"))
+                            {
+                                <li class="nav-item">
+                                    <a asp-action="EditGroup" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="nav-link">
+                                        <h5 class=" font-weight-bold text-danger">Edytuj grupę</h5>
+                                    </a>
+                                </li>
+                            }
 
-<li class="nav-item">
-    <a asp-action="ListRoles" asp-controller="Administration" class="nav-link">
-        <h5 class=" font-weight-bold text-white">Menager roli</h5>
-    </a>
-</li>
-<li>
-    <a asp-action="ListUsers" asp-controller="Administration" class="nav-link">
-        <h5 class=" font-weight-bold text-white">Menager użytkowników</h5>
-    </a>
-</li>
-}
+
+
+                                <li class="nav-item dropdown">
+
+                                    <a class="nav-link dropdown-toggle font-weight-bold text-white h5" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Menadżer
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a asp-action="ListRoles" asp-controller="Administration" class="nav-link dropdown-item">
+                                            <h5 class=" font-weight-bold">Grup (Roli)</h5>
+                                        </a>
+                                        <a asp-action="ListUsers" asp-controller="Administration" class="nav-link dropdown-item">
+                                            <h5 class=" font-weight-bold">Użytkowników</h5>
+                                        </a>
+                                    </div>
+                                </li>
+                            }
                     </ul>
 
                     @*<ul class="navbar-nav">
