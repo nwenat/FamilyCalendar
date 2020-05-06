@@ -54,7 +54,7 @@ namespace FamilyCalendar.Controllers
                         return View("NotFound");
                     }
 
-                    result = await userManager.AddClaimAsync(user, new Claim("Group Admin", "true"));
+                    result = await userManager.AddClaimAsync(user, new Claim( ClaimsStore.AllClaims[0].Type, "true"));
 
                     if (!result.Succeeded)
                     {
