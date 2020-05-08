@@ -65,7 +65,6 @@ namespace FamilyCalendar
             //    options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
             //});
 
-            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();
             services.AddScoped<IEventRepository, SQLEventRepository>();
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();

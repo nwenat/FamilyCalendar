@@ -192,22 +192,6 @@ namespace FamilyCalendar.Models
                //   }
                );
 
-            modelBuilder.Entity<Employee>().HasData(
-               new Employee
-               {
-                   Id = 1,
-                   Name = "Mary",
-                   Department = Dept.IT,
-                   Email = "mary@gmail.com"
-               },
-               new Employee
-               {
-                   Id = 2,
-                   Name = "John",
-                   Department = Dept.Payroll,
-                   Email = "john@gmail.com"
-               }
-               );
         }
     }
 }

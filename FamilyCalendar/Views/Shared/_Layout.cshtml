@@ -46,7 +46,7 @@
                             </li>
                             <li class="nav-item">
                                 <a asp-action="CreateGroup" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="nav-link">
-                                    <h5 class=" font-weight-bold text-white">Stwórz grupę</h5>
+                                    <h5 class=" font-weight-bold text-dark">Stwórz grupę</h5>
                                 </a>
                             </li>
                             @if (User.HasClaim(c => c.Value == "Group Admin"))
