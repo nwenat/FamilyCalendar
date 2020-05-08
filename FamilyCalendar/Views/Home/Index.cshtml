@@ -158,9 +158,29 @@
         }
 
 
+        @if (Model.eventsOtherUsers.Any())
+        {
+            @foreach (var otherUser in Model.eventsOtherUsers)
+            {
+                <h5 class="text-center mt-5 mb-2">@otherUser.userName</h5>
+                <div class="row">
+                    @foreach (var pair in otherUser.eventsInWeek)
+                    {
+
+                        <div class="col-sm border border-dark rounded p-2 @((pair.Key % 7 == 6 || pair.Key % 7 == -1 || pair.Key % 7 == 0 ) && pair.Key != today ? "weekend" : "alldays") @(pair.Key == today ? "today" : "")">
+                            <h5 class="my-3 text-center font-weight-bold"> @ViewBag.Monday.AddDays(pair.Key).ToString("dd/MM/yyyy") </h5>
+                            @foreach (var eevent in pair.Value)
+                            {
+                                <button class="editEvent btn btn-block text-left my-1 @(@eevent.Priority == @Priority.HIGH ? "highP" : "") @(@eevent.Priority == @Priority.MEDIUM ? "mediumP" : "") @(@eevent.Priority == @Priority.LOW ? "lowP" : "")">
+                                    @eevent.From.ToString("HH:mm") - @eevent.To.ToString("HH:mm") @eevent.Name
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        }
     }
-
-
 </div>
 
 @section Scripts {

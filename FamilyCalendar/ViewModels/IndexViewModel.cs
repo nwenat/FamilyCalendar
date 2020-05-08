@@ -10,6 +10,7 @@ namespace FamilyCalendar.ViewModels
     public class IndexViewModel
     {
         public SortedList<int, IEnumerable<Event>> eventsInWeek { get; set; }
+        public List<WeekEventsPerUserViewModel> eventsOtherUsers { get; set; }
         public EventCrateViewModel eventCreate { get; set; }
         public EventEditViewModel eventEdit { get; set; }
         public string uN { get; set; }
@@ -26,5 +27,11 @@ namespace FamilyCalendar.ViewModels
             Value = n.ToString("D2"),
             Text = n.ToString("D2")
         }).ToList();
+
+        public IndexViewModel()
+        {
+            eventsInWeek = new SortedList<int, IEnumerable<Event>>();
+            eventsOtherUsers = new List<WeekEventsPerUserViewModel>();
+        }
     }
 }

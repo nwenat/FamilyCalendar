@@ -22,15 +22,17 @@ namespace FamilyCalendar.Controllers
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IDataProtector protector;
 
         public HomeController(IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger,
-                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings, UserManager<IdentityUser> userManager)
+                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
             this.userManager = userManager;
+            this.roleManager = roleManager;
             protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
@@ -39,12 +41,10 @@ namespace FamilyCalendar.Controllers
         {
             // dayNumer from 1 to 7
             int dayNumber = (int)DateTime.Today.DayOfWeek == 0 ? 7 : (int)DateTime.Today.DayOfWeek;
-
             int indexWeek = page.HasValue ? page.Value : 0;
 
             IndexViewModel model = new IndexViewModel
             {
-                eventsInWeek = new SortedList<int, IEnumerable<Event>>(),
                 page = indexWeek
             };
 
@@ -55,8 +55,30 @@ namespace FamilyCalendar.Controllers
                 if (user != null)
                 {
                     model.eventsInWeek = _eventRepository.GetWeekEventsPerUser(dayNumber, indexWeek, user.Id);
-                }
 
+                    List<IdentityUser> anotherUsersInGroup = new List<IdentityUser>();
+
+                    var userGroups = await userManager.GetRolesAsync(user);
+
+                    foreach (var group in userGroups)
+                    {
+                        foreach(var u in await userManager.GetUsersInRoleAsync(group))
+                        {
+                            anotherUsersInGroup.Add(u);
+                        }
+                    }
+                    var anotherUsers = anotherUsersInGroup.Distinct().ToList();
+                    anotherUsers.Remove(user);
+
+                    foreach(var u in anotherUsers)
+                    {
+                        model.eventsOtherUsers.Add(new WeekEventsPerUserViewModel
+                        {
+                            userName = u.UserName,
+                            eventsInWeek = _eventRepository.GetWeekEventsPerUser(dayNumber, indexWeek, u.Id)
+                    });
+                    }
+                }
             }
 
             ViewBag.Today = dayNumber;
