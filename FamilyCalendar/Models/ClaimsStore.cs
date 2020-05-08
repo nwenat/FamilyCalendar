@@ -11,9 +11,10 @@ namespace FamilyCalendar.Models
         public static List<Claim> AllClaims = new List<Claim>()
         {
             new Claim("Group Admin", "Group Admin"),
-            new Claim("Create Role", "Create Role"),
-            new Claim("Edit Role", "Edit Role"),
-            new Claim("Delete Role", "Delete Role")
+            new Claim("Group User", "Group User")
+            //new Claim("Create Role", "Create Role"),
+            //new Claim("Edit Role", "Edit Role"),
+            //new Claim("Delete Role", "Delete Role")
         };
     }
 }

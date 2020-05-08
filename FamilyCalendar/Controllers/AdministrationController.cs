@@ -54,7 +54,7 @@ namespace FamilyCalendar.Controllers
                         return View("NotFound");
                     }
 
-                    result = await userManager.AddClaimAsync(user, new Claim( ClaimsStore.AllClaims[0].Type, "true"));
+                    result = await userManager.AddClaimAsync(user, new Claim(model.GroupName, ClaimsStore.AllClaims[0].Value));
 
                     if (!result.Succeeded)
                     {
@@ -82,35 +82,82 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditGroup(string uN)
+        public async Task<IActionResult> MyGroups(string uN)
         {
             var userAdministrator = await userManager.FindByNameAsync(uN);
-            var groups = roleManager.Roles;
+            var adminClaims = await userManager.GetClaimsAsync(userAdministrator);
+            var adminGroups = await userManager.GetRolesAsync(userAdministrator);
+            IEnumerable<IdentityRole> groups = roleManager.Roles;
 
-            var model = new EditGroupViewModel();
+            //groups.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name)));
 
-            foreach(var group in roleManager.Roles)
+            //.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name())));
+
+
+            //.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name)));
+
+            //foreach (var claim in adminClaims)
+            //{
+            //    groups.Select(r => r.);
+            //}
+
+            //.Select(r => (adminClaims.Any(c => c.Type == r.Name && c.Value == ClaimsStore.AllClaims[0].Value)));
+            //adminClaims.Any(c => c.Type == r.Name && c.Value == ClaimsStore.AllClaims[0].Value));
+
+
+
+            //foreach (var role in roleManager.Roles)
+            //{
+            //    if (await userManager.IsInRoleAsync(userAdministrator, role.Name) && adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
+            //    {
+            //        groups.Append(role);
+            //    }
+            //}
+
+            //foreach(var group in adminGroups)
+            //{
+            //    groups.Append(await roleManager.FindByNameAsync(group));
+            //}
+
+
+
+            //foreach (var role in await userManager.GetRolesAsync(userAdministrator))
+            //{
+            //    if (adminClaims.Any(c => c.Type.ToString() == role && c.Value == ClaimsStore.AllClaims[0].Value))
+            //    {
+            //        //groups.Append(await roleManager.FindByNameAsync(role));
+            //    }
+            //    groups.Append(await roleManager.FindByNameAsync(role));
+            //}
+
+            return View(groups);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditGroup(string id)
+        {
+            var group = await roleManager.FindByIdAsync(id);
+
+            if (group == null)
             {
-                if(await userManager.IsInRoleAsync(userAdministrator, group.Name))
-                {
-                    model.Id = group.Id;
-                    model.GroupName = group.Name;
+                ViewBag.ErrorMessage = $"Not found group with id: {id}";
+                return View("NotFound");
+            }
 
-                    foreach (var user in userManager.Users)
-                    {
-                        if (await userManager.IsInRoleAsync(user, group.Name))
-                        {
-                            model.Users.Add(user.UserName);
-                        }
-                    }
+            var model = new EditGroupViewModel
+            {
+                Id = group.Id,
+                GroupName = group.Name
+            };
+
+            foreach (var user in userManager.Users)
+            {
+                if (await userManager.IsInRoleAsync(user, group.Name))
+                {
+                    model.Users.Add(user.UserName);
                 }
             }
 
-            if (!groups.Any())
-            {
-                ViewBag.ErrorMessage = $"Not found group";
-                return View("NotFound");
-            }
             return View(model);
         }
 

@@ -5,7 +5,7 @@
 @inject IAuthorizationService authorizationService
 
 @{
-    ViewBag.Title = "Wszystkie role";
+    ViewBag.Title = "Wszystkie grupy";
 }
 
 <div class="container">
@@ -13,7 +13,7 @@
     @if (Model.Any())
     {
         <div class="col">
-            <h1 class="text-center">Wszystkie role</h1>
+            <h1 class="text-center">Wszystkie grupy</h1>
 
             @foreach (var role in Model)
             {
@@ -53,14 +53,14 @@
     else
     {
         <div class="col">
-            <h1 class="text-center">Nie ma żadnych ról jeszcze</h1>
+            <h1 class="text-center">Nie ma żadnych grup (ról) jeszcze</h1>
 
         </div>
     }
 
-    <div>
+    @*<div>
         <a asp-controller="administration" asp-action="createrole" class="btn btn-primary">Stwórz rolę</a>
-    </div>
+    </div>*@
 </div>
 
 @section Scripts {

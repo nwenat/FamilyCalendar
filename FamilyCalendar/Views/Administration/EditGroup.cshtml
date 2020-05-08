@@ -1,26 +1,30 @@
 ﻿@model EditGroupViewModel
 @{
-    ViewBag.Title = "Edytuj grupę";
+    ViewBag.Title = "Zarządzaj grupą";
 }
 <div class="container">
     <div class="col">
-        <h1 class="text-center">Edytuj grupę</h1>
+        <h1 class="text-center">Zarządzaj grupą</h1>
+
+
         <form method="post" enctype="multipart/form-data" asp-controller="Administration" asp-action="EditGroup">
-            <input asp-for="Id" hidden/>
-            <div class="form-group">
-                <label asp-for="Id"></label>
-                <input asp-for="Id" disabled class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GroupName"></label>
-                <input asp-for="GroupName" class="form-control" />
-                <span asp-validation-for="GroupName" class="text-danger"></span>
-            </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a asp-action="Index" asp-controller="Home" asp-route-uN="@User.Identity.Name" class="btn btn-primary">Cancel</a>
+            <input hidden asp-for="@Model.Id" />
+            <div class="card">
+                <div class="card-header">
+                    <h3>Id: @Model.Id</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="@Model.GroupName"></label>
+                        <input asp-for="@Model.GroupName" class="form-control" />
+                        <span asp-validation-for="@Model.GroupName" class="text-danger"></span>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Zmień nazwę</button>
+                    <a asp-action="Index" asp-controller="Home" asp-route-uN="@User.Identity.Name" class="btn btn-primary">Cofnij</a>
+                </div>
             </div>
             <div class="card">
                 <div class="card-header">
@@ -36,13 +40,15 @@
                     }
                     else
                     {
-                        <h5>Brak obecnie</h5>
+                        <h5>Obecnie brak użytkowników w tej grupie</h5>
                     }
                 </div>
                 <div class="card-footer">
-                    <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Add or remove users</a>
+                    <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Dodaj lub usuń użytkownika</a>
                 </div>
             </div>
         </form>
+
+
     </div>
 </div>
