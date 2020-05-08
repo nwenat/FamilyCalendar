@@ -14,7 +14,8 @@ namespace FamilyCalendar.ViewModels
         }
         [Required]
         public string Id { get; set; }
-
+        [Required]
+        public string UN { get; set; }
         [Required]
         [Display(Name = "Nazwa grupy")]
         public string GroupName { get; set; }

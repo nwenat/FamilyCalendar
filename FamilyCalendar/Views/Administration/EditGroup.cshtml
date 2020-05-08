@@ -9,6 +9,7 @@
 
         <form method="post" enctype="multipart/form-data" asp-controller="Administration" asp-action="EditGroup">
             <input hidden asp-for="@Model.Id" />
+            <input hidden asp-for="@Model.UN" value="@User.Identity.Name"/>
             <div class="card">
                 <div class="card-header">
                     <h3>Id: @Model.Id</h3>
@@ -23,7 +24,7 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Zmień nazwę</button>
-                    <a asp-action="Index" asp-controller="Home" asp-route-uN="@User.Identity.Name" class="btn btn-primary">Cofnij</a>
+                    <a asp-action="MyGroups" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="btn btn-primary">Cofnij</a>
                 </div>
             </div>
             <div class="card">
@@ -44,7 +45,7 @@
                     }
                 </div>
                 <div class="card-footer">
-                    <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Dodaj lub usuń użytkownika</a>
+                    <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Dodaj lub usuń użytkowników</a>
                 </div>
             </div>
         </form>

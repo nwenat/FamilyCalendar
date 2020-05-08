@@ -86,50 +86,16 @@ namespace FamilyCalendar.Controllers
         {
             var userAdministrator = await userManager.FindByNameAsync(uN);
             var adminClaims = await userManager.GetClaimsAsync(userAdministrator);
-            var adminGroups = await userManager.GetRolesAsync(userAdministrator);
-            IEnumerable<IdentityRole> groups = roleManager.Roles;
 
-            //groups.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name)));
+            List<IdentityRole> groups = new List<IdentityRole>();
 
-            //.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name())));
-
-
-            //.Select(r => (userManager.IsInRoleAsync(userAdministrator, r.Name)));
-
-            //foreach (var claim in adminClaims)
-            //{
-            //    groups.Select(r => r.);
-            //}
-
-            //.Select(r => (adminClaims.Any(c => c.Type == r.Name && c.Value == ClaimsStore.AllClaims[0].Value)));
-            //adminClaims.Any(c => c.Type == r.Name && c.Value == ClaimsStore.AllClaims[0].Value));
-
-
-
-            //foreach (var role in roleManager.Roles)
-            //{
-            //    if (await userManager.IsInRoleAsync(userAdministrator, role.Name) && adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
-            //    {
-            //        groups.Append(role);
-            //    }
-            //}
-
-            //foreach(var group in adminGroups)
-            //{
-            //    groups.Append(await roleManager.FindByNameAsync(group));
-            //}
-
-
-
-            //foreach (var role in await userManager.GetRolesAsync(userAdministrator))
-            //{
-            //    if (adminClaims.Any(c => c.Type.ToString() == role && c.Value == ClaimsStore.AllClaims[0].Value))
-            //    {
-            //        //groups.Append(await roleManager.FindByNameAsync(role));
-            //    }
-            //    groups.Append(await roleManager.FindByNameAsync(role));
-            //}
-
+            foreach (var role in roleManager.Roles)
+            {
+                if (await userManager.IsInRoleAsync(userAdministrator, role.Name) && adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
+                {
+                    groups.Add(role);
+                }
+            }
             return View(groups);
         }
 
@@ -157,7 +123,6 @@ namespace FamilyCalendar.Controllers
                     model.Users.Add(user.UserName);
                 }
             }
-
             return View(model);
         }
 
@@ -165,7 +130,7 @@ namespace FamilyCalendar.Controllers
         public async Task<IActionResult> EditGroup(EditGroupViewModel model)
         {
             var group = await roleManager.FindByIdAsync(model.Id);
-
+            string oldGroupName = group.Name;
             if (group == null)
             {
                 ViewBag.ErrorMessage = $"Not found group with id: {model.Id}";
@@ -178,7 +143,16 @@ namespace FamilyCalendar.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    var user = await userManager.FindByNameAsync(model.UN);
+
+                    if(user != null)
+                    {
+                        Claim oldClaim = ((List<Claim>)(await userManager.GetClaimsAsync(user))).Where(c => c.Type == oldGroupName).First();
+
+                        await userManager.ReplaceClaimAsync(user, oldClaim, new Claim(model.GroupName, ClaimsStore.AllClaims[0].Value));
+
+                    }
+                    return RedirectToAction("MyGroups", "Administration", new { uN = model.UN });
                 }
                 foreach (IdentityError error in result.Errors)
                 {
