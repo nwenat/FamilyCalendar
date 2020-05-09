@@ -25,8 +25,7 @@ namespace FamilyCalendar
         {
             _config = config;
         }
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_config.GetConnectionString("CalendarDBConection")));
@@ -38,42 +37,34 @@ namespace FamilyCalendar
                 options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<AppDbContext>();
 
-            //services.AddMvc(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
-            //}).AddXmlSerializerFormatters();
-
-            // !!!!!!!!!!!zamiast tego u gory
-            services.AddMvc().AddXmlSerializerFormatters();
-
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            }).AddXmlSerializerFormatters();
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
             });
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("DeleteRolePolicy", policy => policy.RequireClaim("Delete Role"));
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminGroupRolePolicy", policy => policy.RequireClaim("Group Admin"));
+                options.AddPolicy("SuperAdminRolePolicy", policy => policy.RequireClaim("Super Admin", "true"));
 
-            //    options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
-
-            //    //options.InvokeHandlersAfterFailure = false;
-
-
-            //    options.AddPolicy("AdminRolePolicy", policy => policy.RequireRole("Admin"));  //"Admin", "Test" itd...
-            //});
+                options.AddPolicy("EditRolePolicy", policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
+                //    //options.InvokeHandlersAfterFailure = false;
+            });
 
             services.AddScoped<IEventRepository, SQLEventRepository>();
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherAdminRolesAndClaimsHandler>();
             services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
 
-            services.AddSingleton<DataProtectionPurposeStrings>();
+            //services.AddSingleton<DataProtectionPurposeStrings>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())

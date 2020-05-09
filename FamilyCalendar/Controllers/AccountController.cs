@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace FamilyCalendar.Controllers
 {
     public class AccountController : Controller
@@ -29,7 +27,6 @@ namespace FamilyCalendar.Controllers
             return RedirectToAction("index", "home");
         }
 
-        // GET: /<controller>/
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
@@ -42,7 +39,6 @@ namespace FamilyCalendar.Controllers
         public async Task<IActionResult> IsNameInUse(string name)
         {
             var user = await userManager.FindByNameAsync(name);
-
             if(user == null)
             {
                 return Json(true);
@@ -70,7 +66,7 @@ namespace FamilyCalendar.Controllers
                     }
 
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("index", "home", new { uN = model.Name });
                 }
 
                 foreach (var error in result.Errors)

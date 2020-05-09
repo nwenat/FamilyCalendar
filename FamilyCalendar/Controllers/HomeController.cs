@@ -1,8 +1,6 @@
 ﻿using FamilyCalendar.Models;
-using FamilyCalendar.Security;
 using FamilyCalendar.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -23,17 +21,15 @@ namespace FamilyCalendar.Controllers
         private readonly ILogger logger;
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IDataProtector protector;
 
         public HomeController(IEventRepository eventRepository, IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger,
-                                IDataProtectionProvider dataProtectionProvider, DataProtectionPurposeStrings dataProtectionPurposeStrings, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+                                UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _eventRepository = eventRepository;
             this.hostingEnvironment = hostingEnvironment;
             this.logger = logger;
             this.userManager = userManager;
             this.roleManager = roleManager;
-            protector = dataProtectionProvider.CreateProtector(dataProtectionPurposeStrings.EmployeeIdRouteValue);
         }
 
         [HttpGet]
@@ -51,15 +47,12 @@ namespace FamilyCalendar.Controllers
             if (uN != null)
             {
                 var user = await userManager.FindByNameAsync(uN);
-
                 if (user != null)
                 {
                     model.eventsInWeek = _eventRepository.GetWeekEventsPerUser(dayNumber, indexWeek, user.Id);
 
                     List<IdentityUser> anotherUsersInGroup = new List<IdentityUser>();
-
                     var userGroups = await userManager.GetRolesAsync(user);
-
                     foreach (var group in userGroups)
                     {
                         foreach(var u in await userManager.GetUsersInRoleAsync(group))
@@ -67,9 +60,9 @@ namespace FamilyCalendar.Controllers
                             anotherUsersInGroup.Add(u);
                         }
                     }
+
                     var anotherUsers = anotherUsersInGroup.Distinct().ToList();
                     anotherUsers.Remove(user);
-
                     foreach(var u in anotherUsers)
                     {
                         model.eventsOtherUsers.Add(new WeekEventsPerUserViewModel
@@ -80,20 +73,18 @@ namespace FamilyCalendar.Controllers
                     }
                 }
             }
-
             ViewBag.Today = dayNumber;
             ViewBag.Monday = DateTime.Today.AddDays(-dayNumber);
             return View(model);
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid) )
             {
                 EventCrateViewModel eModel = model.eventCreate;
-
                 DateTime fromModel = eModel.Date.AddHours(eModel.FromHour).AddMinutes(eModel.FromMinutes);
                 DateTime toModel = eModel.Date.AddHours(eModel.ToHour).AddMinutes(eModel.ToMinutes);
 
@@ -113,9 +104,7 @@ namespace FamilyCalendar.Controllers
                         To = toModel,
                         Priority = eModel.Priority
                     };
-
                     _eventRepository.Add(newEvent);
-
                 }
                 return RedirectToAction("index", new { uN = model.uN, page = model.page });
             }
@@ -123,7 +112,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult EditEvent(IndexViewModel model)
         {
             if ((ModelState.IsValid))
@@ -140,20 +129,17 @@ namespace FamilyCalendar.Controllers
                 {
                     toModel = fromModel;
                 }
-
                 editEvent.From = fromModel;
                 editEvent.To = toModel;
                 editEvent.Priority = eModel.Priority;
-
                 _eventRepository.Update(editEvent);
                 return RedirectToAction("index", new { uN = model.uN, page = model.page });
             }
-
             return RedirectToAction("index", new { uN = model.uN, page = model.page });
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public IActionResult DeleteEvent(IndexViewModel model)
         {
             _eventRepository.Delete(model.deleteId);

@@ -7,7 +7,6 @@
 }
 <div class="container-fluid">
 
-
     @if (signInManager.IsSignedIn(User))
     {
         <div class="row justify-content-between my-3">
@@ -157,12 +156,11 @@
             </div>
         }
 
-
         @if (Model.eventsOtherUsers.Any())
         {
             @foreach (var otherUser in Model.eventsOtherUsers)
             {
-                <h5 class="text-center mt-5 mb-2">@otherUser.userName</h5>
+                <h5 class="text-center mt-3 mb-1">@otherUser.userName</h5>
                 <div class="row">
                     @foreach (var pair in otherUser.eventsInWeek)
                     {

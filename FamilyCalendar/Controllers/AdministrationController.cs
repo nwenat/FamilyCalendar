@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.Controllers
 {
-    //[Authorize(Policy = "AdminRolePolicy")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -54,7 +53,7 @@ namespace FamilyCalendar.Controllers
                         return View("NotFound");
                     }
 
-                    result = await userManager.AddClaimAsync(user, new Claim(model.GroupName, ClaimsStore.AllClaims[0].Value));
+                    result = await userManager.AddClaimAsync(user, new Claim(ClaimsStore.AllClaims[0].Type, model.GroupName));
 
                     if (!result.Succeeded)
                     {
@@ -82,6 +81,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> MyGroups(string uN)
         {
             var userAdministrator = await userManager.FindByNameAsync(uN);
@@ -91,7 +91,7 @@ namespace FamilyCalendar.Controllers
 
             foreach (var role in roleManager.Roles)
             {
-                if (adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
+                if (adminClaims.Any(c => c.Type == ClaimsStore.AllClaims[0].Type && c.Value == role.Name))
                 {
                     groups.Add(role);
                 }
@@ -100,6 +100,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> EditGroup(string id)
         {
             var group = await roleManager.FindByIdAsync(id);
@@ -127,6 +128,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> EditGroup(EditGroupViewModel model)
         {
             var group = await roleManager.FindByIdAsync(model.Id);
@@ -147,10 +149,8 @@ namespace FamilyCalendar.Controllers
 
                     if(user != null)
                     {
-                        Claim oldClaim = ((List<Claim>)(await userManager.GetClaimsAsync(user))).Where(c => c.Type == oldGroupName).First();
-
-                        await userManager.ReplaceClaimAsync(user, oldClaim, new Claim(model.GroupName, ClaimsStore.AllClaims[0].Value));
-
+                        Claim oldClaim = ((List<Claim>)(await userManager.GetClaimsAsync(user))).Where(c => c.Value == oldGroupName).First();
+                        await userManager.ReplaceClaimAsync(user, oldClaim, new Claim(ClaimsStore.AllClaims[0].Type, model.GroupName));
                     }
                     return RedirectToAction("MyGroups", "Administration", new { uN = model.UN });
                 }
@@ -164,6 +164,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> EditUsersInGroup(string Id)
         {
             ViewBag.roleId = Id;
@@ -197,6 +198,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> EditUsersInGroup(List<UserRoleViewModel> model, string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -238,19 +240,8 @@ namespace FamilyCalendar.Controllers
             return RedirectToAction("EditGroup", new { id = roleId });
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         [HttpPost]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -277,6 +268,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> ManageUserClaims(string userId)
         {
             ViewBag.userId = userId;
@@ -313,6 +305,7 @@ namespace FamilyCalendar.Controllers
 
 
         [HttpPost]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> ManageUserClaims(UserClaimsViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.UserId);
@@ -343,7 +336,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy = "EditRolePolicy")]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
             ViewBag.userId = userId;
@@ -382,7 +375,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "EditRolePolicy")]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model, string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -413,7 +406,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "DeleteRolePolicy")]
+        [Authorize(Policy = "AdminGroupRolePolicy")]
         public async Task<IActionResult> DeleteRole(string id, string uN)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -457,14 +450,15 @@ namespace FamilyCalendar.Controllers
                 {
                     logger.LogError($"Error deleting role {ex}");
 
-                    ViewBag.ErrorTitle = $"{role.Name} role is in use";
-                    ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role. If you want to delete this role, please remove the users from the role and then try to delete.";
+                    ViewBag.ErrorTitle = $"{role.Name} - grupa w użyciu";
+                    ViewBag.ErrorMessage = $"{role.Name} aby usunąć grupę nie może ona zawierać użytkowników, usuń użytkowników z tej grupy a następnie usuń grupę.";
                     return View("Error");
                 }
             }
         }
 
         [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public IActionResult ListUsers()
         {
             var users = userManager.Users;
@@ -472,6 +466,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -497,6 +492,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await userManager.FindByIdAsync(model.Id);
@@ -525,36 +521,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Name = model.RoleName
-                };
-                IdentityResult result = await roleManager.CreateAsync(identityRole);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles", "Administration");
-                }
-
-                foreach(IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-            }
-            return View(model);
-        }
-
-        [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public IActionResult ListRoles()
         {
             var roles = roleManager.Roles;
@@ -562,6 +529,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await roleManager.FindByIdAsync(id);
@@ -578,33 +546,50 @@ namespace FamilyCalendar.Controllers
                 RoleName = role.Name
             };
 
-            foreach(var user in userManager.Users)
+            foreach (var user in userManager.Users)
             {
-                if(await userManager.IsInRoleAsync(user, role.Name))
+                if (await userManager.IsInRoleAsync(user, role.Name))
                 {
                     model.Users.Add(user.UserName);
                 }
             }
-
             return View(model);
         }
 
         [HttpPost]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
-
+            var oldGroupName = role.Name;
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Not found role with id: {model.Id}";
                 return View("NotFound");
-            } else
+            }
+            else
             {
                 role.Name = model.RoleName;
                 var result = await roleManager.UpdateAsync(role);
 
                 if (result.Succeeded)
                 {
+                    IdentityUser adminUser = null;
+
+                    foreach (var user in userManager.Users)
+                    {
+                        var userClaims = await userManager.GetClaimsAsync(user);
+                        if (userClaims.Any(c => c.Type == ClaimsStore.AllClaims[0].Type && c.Value == oldGroupName))
+                        {
+                            adminUser = user;
+                        }
+                    }
+
+                    if (adminUser != null)
+                    {
+                        Claim oldClaim = ((List<Claim>)(await userManager.GetClaimsAsync(adminUser))).Where(c => c.Value == oldGroupName).First();
+                        await userManager.ReplaceClaimAsync(adminUser, oldClaim, new Claim(ClaimsStore.AllClaims[0].Type, model.RoleName));
+                    }
                     return RedirectToAction("ListRoles", "Administration");
                 }
                 foreach (IdentityError error in result.Errors)
@@ -617,6 +602,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
@@ -639,7 +625,7 @@ namespace FamilyCalendar.Controllers
                     UserName = user.UserName
                 };
 
-                if(await userManager.IsInRoleAsync(user, role.Name))
+                if (await userManager.IsInRoleAsync(user, role.Name))
                 {
                     userRoleViewModel.IsSelected = true;
                 }
@@ -655,6 +641,7 @@ namespace FamilyCalendar.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "SuperAdminRolePolicy")]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> moel, string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -665,17 +652,17 @@ namespace FamilyCalendar.Controllers
                 return View("NotFound");
             }
 
-            for(int i = 0; i < moel.Count; i++)
+            for (int i = 0; i < moel.Count; i++)
             {
                 var user = await userManager.FindByIdAsync(moel[i].UserId);
                 IdentityResult result = null;
 
-                if(moel[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
+                if (moel[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
                 {
                     result = await userManager.AddToRoleAsync(user, role.Name);
 
                 }
-                else if(!moel[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
+                else if (!moel[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
                 {
                     result = await userManager.RemoveFromRoleAsync(user, role.Name);
                 }
@@ -684,7 +671,7 @@ namespace FamilyCalendar.Controllers
                     continue;
                 }
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     if (i < (moel.Count - 1))
                         continue;
@@ -692,7 +679,6 @@ namespace FamilyCalendar.Controllers
                         return RedirectToAction("EditRole", new { Id = roleId });
                 }
             }
-
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
