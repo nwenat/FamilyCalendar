@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using FamilyCalendar.Models;
 using FamilyCalendar.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -57,14 +59,13 @@ namespace FamilyCalendar.Controllers
                     UserName = model.Name
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
+                if (userManager.Users.Count() == 1)
+                {
+                    await userManager.AddClaimAsync(user, new Claim(ClaimsStore.AllClaims[1].Type, "true"));
+                }
 
                 if (result.Succeeded)
                 {
-                    if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("ListUsers", "Administration");
-                    }
-
                     await signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home", new { uN = model.Name });
                 }

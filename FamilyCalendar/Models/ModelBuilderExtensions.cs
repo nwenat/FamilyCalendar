@@ -12,7 +12,6 @@ namespace FamilyCalendar.Models
 
         public static void Seed(this ModelBuilder modelBuilder)
         {
-
             DateTime lastMonday = new DateTime(2020, 4, 27, 0, 0, 0);
             DateTime lastTuesday = new DateTime(2020, 4, 28, 0, 0, 0);
             DateTime lastWensday = new DateTime(2020, 4, 29, 0, 0, 0);
