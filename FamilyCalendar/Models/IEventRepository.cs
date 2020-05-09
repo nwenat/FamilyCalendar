@@ -13,5 +13,6 @@ namespace FamilyCalendar.Models
         Event Update(Event eventChanges);
         Event Delete(int id);
         SortedList<int, IEnumerable<Event>> GetWeekEvents(int dayNumber, int indexWeek);
+        SortedList<int, IEnumerable<Event>> GetWeekEventsPerUser(int dayNumber, int indexWeek, string userId);
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using FamilyCalendar.Models;
 using FamilyCalendar.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FamilyCalendar.Controllers
 {
@@ -29,7 +29,6 @@ namespace FamilyCalendar.Controllers
             return RedirectToAction("index", "home");
         }
 
-        // GET: /<controller>/
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
@@ -42,7 +41,6 @@ namespace FamilyCalendar.Controllers
         public async Task<IActionResult> IsNameInUse(string name)
         {
             var user = await userManager.FindByNameAsync(name);
-
             if(user == null)
             {
                 return Json(true);
@@ -61,16 +59,15 @@ namespace FamilyCalendar.Controllers
                     UserName = model.Name
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
+                if (userManager.Users.Count() == 1)
+                {
+                    await userManager.AddClaimAsync(user, new Claim(ClaimsStore.AllClaims[1].Type, "true"));
+                }
 
                 if (result.Succeeded)
                 {
-                    if(signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("ListUsers", "Administration");
-                    }
-
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("index", "home", new { uN = model.Name });
                 }
 
                 foreach (var error in result.Errors)
@@ -104,7 +101,7 @@ namespace FamilyCalendar.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("index", "home");
+                        return RedirectToAction("index", "home", new { uN = model.Name});
                     }
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Login Attempt");

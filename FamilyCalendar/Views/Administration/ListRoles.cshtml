@@ -1,66 +1,52 @@
 ﻿@model IEnumerable<IdentityRole>
 
-@using Microsoft.AspNetCore.Authorization
-
 @inject IAuthorizationService authorizationService
 
 @{
-    ViewBag.Title = "Wszystkie role";
+    ViewBag.Title = "Wszystkie grupy";
 }
 
 <div class="container">
-
     @if (Model.Any())
     {
         <div class="col">
-            <h1 class="text-center">Wszystkie role</h1>
+            <h1 class="text-center">Wszystkie grupy</h1>
 
             @foreach (var role in Model)
             {
-
                 <div class="card">
                     <div class="card-header">
-                        <h3>Role id: @role.Id</h3>
+                        <h3>Id: @role.Id</h3>
                     </div>
                     <div class="card-body">
-                        <h3>Rola: @role.Name</h3>
+                        <h3>Nazwa grupy: @role.Name</h3>
                     </div>
                     <div class="card-footer">
                         <form method="post" asp-action="DeleteRole" asp-route-id="@role.Id">
 
-                            @if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
-                            {
-                                <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edit</a>
-                            }
-
+                            <a asp-action="EditRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-primary">Edytuj</a>
                             <span id="confirmDeleteSpan_@role.Id" style="display:none">
                                 <span>Are you sure you want to delete?</span>
-                                <button type="submit" class="btn btn-danger">Yes</button>
-                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.Id', false)">No</a>
+                                <button type="submit" class="btn btn-danger">Tak</button>
+                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.Id', false)">Nie</a>
                             </span>
                             <span id="deleteSpan_@role.Id">
-                                <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                                <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.Id', true)">Usuń</a>
                             </span>
                         </form>
                     </div>
                 </div>
-
-
+                <br/>
             }
-
         </div>
     }
     else
     {
         <div class="col">
-            <h1 class="text-center">Nie ma żadnych ról jeszcze</h1>
+            <h1 class="text-center">Nie ma żadnych grup (ról) jeszcze</h1>
 
         </div>
     }
-
-    <div>
-        <a asp-controller="administration" asp-action="createrole" class="btn btn-primary">Stwórz rolę</a>
-    </div>
 </div>
 
 @section Scripts {

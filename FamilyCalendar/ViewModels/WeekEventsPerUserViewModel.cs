@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FamilyCalendar.ViewModels
 {
-    public class HomeDetailsViewModel
+    public class WeekEventsPerUserViewModel
     {
-        public Employee Employee { get; set; }
-        public string PageTitle { get; set; }
+        public SortedList<int, IEnumerable<Event>> eventsInWeek { get; set; }
+        public string userName { get; set; }
     }
 }

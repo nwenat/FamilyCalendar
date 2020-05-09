@@ -1,35 +1,36 @@
-﻿@model EditRoleViewModel
-
+﻿@model EditGroupViewModel
 @{
-    ViewBag.Title = "Edytuj role";
+    ViewBag.Title = "Zarządzaj grupą";
 }
-
 <div class="container">
     <div class="col">
-        <h1 class="text-center">Edytuj grupę (rolę)</h1>
-        <form method="post">
-            <input hidden asp-for="Id" />
+        <h1 class="text-center">Zarządzaj grupą</h1>
+
+
+        <form method="post" enctype="multipart/form-data" asp-controller="Administration" asp-action="EditGroup">
+            <input hidden asp-for="@Model.Id" />
+            <input hidden asp-for="@Model.UN" value="@User.Identity.Name"/>
             <div class="card">
                 <div class="card-header">
                     <h3>Id: @Model.Id</h3>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label asp-for="RoleName"></label>
-                        <input asp-for="RoleName" class="form-control" />
-                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                        <label asp-for="@Model.GroupName"></label>
+                        <input asp-for="@Model.GroupName" class="form-control" />
+                        <span asp-validation-for="@Model.GroupName" class="text-danger"></span>
                     </div>
                     <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Zmień nazwę</button>
-                    <a asp-action="ListRoles" asp-controller="Administration" class="btn btn-primary">Cofnij</a>
+                    <a asp-action="MyGroups" asp-controller="Administration" asp-route-uN="@User.Identity.Name" class="btn btn-primary">Cofnij</a>
                 </div>
             </div>
             <br/>
             <div class="card">
                 <div class="card-header">
-                    <h3>Użytkownicy o tej roli:</h3>
+                    <h3>Użytkownicy w tej grupie:</h3>
                 </div>
                 <div class="card-body">
                     @if (Model.Users.Any())
@@ -41,13 +42,15 @@
                     }
                     else
                     {
-                        <h5>Brak obecnie</h5>
+                        <h5>Obecnie brak użytkowników w tej grupie</h5>
                     }
                 </div>
                 <div class="card-footer">
-                    <a asp-controller="Administration" asp-action="EditUsersInRole" asp-route-roleId="@Model.Id" class="btn btn-primary">Dodaj lub usuń użytkowników</a>
+                    <a asp-controller="Administration" asp-action="EditUsersInGroup" asp-route-Id="@Model.Id" class="btn btn-primary">Dodaj lub usuń użytkowników</a>
                 </div>
             </div>
         </form>
+
+
     </div>
 </div>

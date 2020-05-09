@@ -4,14 +4,16 @@ using FamilyCalendar.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamilyCalendar.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200430070406_TestIdUserString")]
+    partial class TestIdUserString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,74 +86,164 @@ namespace FamilyCalendar.Migrations
                         new
                         {
                             Id = 1,
-                            From = new DateTime(2020, 4, 27, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 20, 7, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Praca pon",
                             Priority = 0,
-                            To = new DateTime(2020, 4, 27, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 20, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 2,
-                            From = new DateTime(2020, 4, 27, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 20, 16, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Zakupy",
                             Priority = 1,
-                            To = new DateTime(2020, 4, 27, 17, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 20, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 3,
-                            From = new DateTime(2020, 4, 27, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 20, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Call",
                             Priority = 0,
-                            To = new DateTime(2020, 4, 27, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 20, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 4,
-                            From = new DateTime(2020, 4, 27, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 20, 20, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Kino",
                             Priority = 2,
-                            To = new DateTime(2020, 4, 27, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 20, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 5,
-                            From = new DateTime(2020, 4, 28, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 21, 7, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Praca wt",
                             Priority = 0,
-                            To = new DateTime(2020, 4, 28, 15, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 21, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 6,
-                            From = new DateTime(2020, 4, 28, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 21, 16, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Zakupy",
                             Priority = 1,
-                            To = new DateTime(2020, 4, 28, 17, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 21, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 7,
-                            From = new DateTime(2020, 4, 28, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 21, 17, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Call",
                             Priority = 0,
-                            To = new DateTime(2020, 4, 28, 18, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 21, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         },
                         new
                         {
                             Id = 8,
-                            From = new DateTime(2020, 4, 28, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 4, 21, 20, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Kino",
                             Priority = 2,
-                            To = new DateTime(2020, 4, 28, 22, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = "9607d42e-a830-490e-bf81-f27ea8978e96"
+                            To = new DateTime(2020, 4, 21, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            From = new DateTime(2020, 4, 22, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Praca sr",
+                            Priority = 0,
+                            To = new DateTime(2020, 4, 22, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            From = new DateTime(2020, 4, 22, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Zakupy",
+                            Priority = 1,
+                            To = new DateTime(2020, 4, 22, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            From = new DateTime(2020, 4, 22, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Call",
+                            Priority = 0,
+                            To = new DateTime(2020, 4, 22, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            From = new DateTime(2020, 4, 22, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Kino",
+                            Priority = 2,
+                            To = new DateTime(2020, 4, 22, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            From = new DateTime(2020, 4, 23, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Praca czw",
+                            Priority = 0,
+                            To = new DateTime(2020, 4, 23, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            From = new DateTime(2020, 4, 23, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Zakupy",
+                            Priority = 1,
+                            To = new DateTime(2020, 4, 23, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            From = new DateTime(2020, 4, 24, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Praca pt",
+                            Priority = 0,
+                            To = new DateTime(2020, 4, 24, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            From = new DateTime(2020, 4, 24, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Zakupy",
+                            Priority = 1,
+                            To = new DateTime(2020, 4, 24, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            From = new DateTime(2020, 4, 25, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Odpoczynek sobota",
+                            Priority = 1,
+                            To = new DateTime(2020, 4, 25, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            From = new DateTime(2020, 4, 26, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Basen niedziela",
+                            Priority = 2,
+                            To = new DateTime(2020, 4, 26, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = "1"
                         });
                 });
 

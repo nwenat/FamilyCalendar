@@ -10,10 +10,10 @@ namespace FamilyCalendar.Models
     public class Event
     {
         public int Id { get; set; }
-        [NotMapped]
-        public string EncryptedId { get; set; }
+        //[NotMapped]
+        //public string EncryptedId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
         public string Name { get; set; }
