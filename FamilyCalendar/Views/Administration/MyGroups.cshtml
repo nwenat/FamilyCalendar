@@ -20,7 +20,7 @@
                         <h3>Nazwa grupy: @group.Name</h3>
                     </div>
                     <div class="card-footer">
-                        <form method="post" asp-action="DeleteRole" asp-route-id="@group.Id">
+                        <form method="post" asp-action="DeleteRole" asp-route-id="@group.Id" asp-route-uN="@User.Identity.Name">
                             @*@if ((await authorizationService.AuthorizeAsync(User, "EditRolePolicy")).Succeeded)
                                 {*@
                             <a asp-action="EditGroup" asp-controller="Administration" asp-route-id="@group.Id" class="btn btn-primary">Zarządzaj</a>

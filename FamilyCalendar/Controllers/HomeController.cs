@@ -76,7 +76,7 @@ namespace FamilyCalendar.Controllers
                         {
                             userName = u.UserName,
                             eventsInWeek = _eventRepository.GetWeekEventsPerUser(dayNumber, indexWeek, u.Id)
-                    });
+                        });
                     }
                 }
             }
@@ -117,10 +117,8 @@ namespace FamilyCalendar.Controllers
                     _eventRepository.Add(newEvent);
 
                 }
-                
                 return RedirectToAction("index", new { uN = model.uN, page = model.page });
             }
-
             return RedirectToAction("index", new { uN = model.uN, page = model.page });
         }
 

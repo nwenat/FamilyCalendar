@@ -91,7 +91,7 @@ namespace FamilyCalendar.Controllers
 
             foreach (var role in roleManager.Roles)
             {
-                if (await userManager.IsInRoleAsync(userAdministrator, role.Name) && adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
+                if (adminClaims.Any(c => c.Type == role.Name && c.Value == ClaimsStore.AllClaims[0].Value))
                 {
                     groups.Add(role);
                 }
@@ -414,7 +414,7 @@ namespace FamilyCalendar.Controllers
 
         [HttpPost]
         //[Authorize(Policy = "DeleteRolePolicy")]
-        public async Task<IActionResult> DeleteRole(string id)
+        public async Task<IActionResult> DeleteRole(string id, string uN)
         {
             var role = await roleManager.FindByIdAsync(id);
 
@@ -430,14 +430,28 @@ namespace FamilyCalendar.Controllers
                     var result = await roleManager.DeleteAsync(role);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("ListRoles");
+                        if(uN == null)
+                        {
+                            return RedirectToAction("ListRoles");
+                        }
+                        else
+                        {
+                            return RedirectToAction("MyGroups", "Administration", new { uN = uN});
+                        }
                     }
                     foreach (IdentityError error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
                     }
 
-                    return View("ListRoles");
+                    if (uN == null)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+                    else
+                    {
+                        return RedirectToAction("MyGroups", "Administration", new { uN = uN });
+                    }
                 }
                 catch(DbUpdateException ex)
                 {
